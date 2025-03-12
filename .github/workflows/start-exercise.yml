@@ -25,7 +25,7 @@ jobs:
             gh workflow disable "$workflow_name" || true
           done
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   update_readme_buttons:
     name: Update README Buttons

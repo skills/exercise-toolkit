@@ -1,0 +1,52 @@
+name: Update README Exercise Buttons
+
+on:
+  workflow_call:
+
+permissions:
+  contents: write
+
+jobs:
+  update_readme_buttons:
+    name: Update README Buttons
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deactivate 'Start Excercise' button
+        run: |
+          # Remove href from 'Start Exercise' button
+          target='id="copy-exercise"[^>]*href="[^"]*"'
+          replacement='id="copy-exercise"'
+          sed -i "s|$target|$replacement|g" README.md
+
+          # Change color from green to gray
+          target=Copy_Exercise-008000
+          replacement=Copy_Exercise-AAA
+          sed -i "s|$target|$replacement|g" README.md
+
+      - name: Activate 'Start Exercise' button
+        run: |
+          # Add link to issue
+          target='id="start-exercise"'
+          replacement='id="start-exercise" href="../../issues/1"'
+          sed -i "s|$target|$replacement|g" README.md
+
+          # Change color from gray to green
+          target=Start_Exercise-AAA
+          replacement=Start_Exercise-008000
+          sed -i "s|$target|$replacement|g" README.md
+
+      - name: Replace relative links in readme
+        run: |
+          target=../../
+          replacement=https://github.com/${{ github.repository }}/
+          sed -i "s|$target|$replacement|g" README.md
+
+      - name: Push README changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: "README.md"
+          message: "Start exercise"
+          default_author: github_actions

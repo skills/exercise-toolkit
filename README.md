@@ -12,3 +12,7 @@ This repository serves as a comprehensive toolkit for creating and managing GitH
 
 - **[.github/workflows](/.github/workflows)**: GitHub Actions workflows for automating common parts of Skills Exercises
 - **[markdown-templates](/markdown-templates)**: Ready-to-use Markdown templates for creating consistent exercise documentation, instructions, and README files
+
+## Contributing
+
+For contribution guidelines, see our [CONTRIBUTING.md](/CONTRIBUTING.md) file.

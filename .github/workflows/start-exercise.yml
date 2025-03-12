@@ -1,12 +1,32 @@
-name: Update README Exercise Buttons
+name: Start Exercise
 
 on:
   workflow_call:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
+  disable_workflows:
+    name: Disable exercise workflows
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Disable all exercise workflows
+        run: |
+          # Find all workflow files that start with a number (0-9)
+          workflows=$(git ls-files | grep -E '^\.github/workflows/[0-9].*\.(yml|yaml)$')
+          for workflow in $workflows; do
+            workflow_name=$(basename $workflow)
+            echo "Disabling workflow: $workflow_name"
+            gh workflow disable "$workflow_name" || true
+          done
+        env:
+          GH_TOKEN: ${{ github.token }}
+
   update_readme_buttons:
     name: Update README Buttons
     runs-on: ubuntu-latest

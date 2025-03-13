@@ -1,4 +1,4 @@
-name: Find Exercise Issue # Preparing to make your extension
+name: Find Exercise Issue
 
 on:
   workflow_call:

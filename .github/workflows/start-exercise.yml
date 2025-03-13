@@ -20,9 +20,9 @@ on:
         value: ${{ jobs.create_exercise.outputs.issue-number }}
 
 permissions:
-  contents: write
-  actions: write
-  issues: write
+  contents: write # Update Readme
+  actions: write # Disable workflows
+  issues: write # Create issue
 
 jobs:
   disable_workflows:
@@ -59,7 +59,7 @@ jobs:
         with:
           repository: skills/exercise-toolkit
           path: exercise-toolkit
-          ref: start-exercise-workflow
+          ref: dev # TODO: Change to tag
 
       - name: Build welcome message from template
         id: build-issue-description
@@ -88,9 +88,10 @@ jobs:
           ISSUE_BODY: ${{ steps.build-issue-description.outputs.updated-text }}
           EXERCISE_TITLE: ${{ inputs.exercise-title }}
 
-  update_readme_buttons:
-    name: Update README Buttons
+  update_readme:
+    name: Update README
     runs-on: ubuntu-latest
+    needs: create_exercise
 
     steps:
       - uses: actions/checkout@v4
@@ -111,7 +112,7 @@ jobs:
         run: |
           # Add link to issue
           target='id="start-exercise"'
-          replacement='id="start-exercise" href="../../issues/1"'
+          replacement='id="start-exercise" href="../../issues/${{ needs.create_exercise.outputs.issue-number }}"'
           sed -i "s|$target|$replacement|g" README.md
 
           # Change color from gray to green

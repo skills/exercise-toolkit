@@ -2,6 +2,22 @@ name: Start Exercise
 
 on:
   workflow_call:
+    inputs:
+      exercise-title:
+        description: 'Title of the exercise'
+        required: true
+        type: string
+      intro-message:
+        description: 'Introduction message for the exercise'
+        required: true
+        type: string
+    outputs:
+      issue-url:
+        description: 'URL of the created issue'
+        value: ${{ jobs.create_exercise.outputs.issue-url }}
+      issue-number:
+        description: 'Number of the created issue'
+        value: ${{ jobs.create_exercise.outputs.issue-number }}
 
 permissions:
   contents: write
@@ -26,6 +42,50 @@ jobs:
           done
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+  create_exercise:
+    name: Create exercise issue
+    runs-on: ubuntu-latest
+
+    outputs:
+      issue-url: ${{ steps.create-issue.outputs.ISSUE_URL }}
+      issue-number: ${{ steps.create-issue.outputs.ISSUE_NUMBER }}
+
+    steps:
+      - name: Get response templates
+        uses: actions/checkout@v4
+        with:
+          repository: skills/exercise-toolkit
+          path: exercise-toolkit
+          ref: start-exercise-workflow
+
+      - name: Build welcome message from template
+        id: build-issue-description
+        uses: skills/action-text-variables@v1
+        with:
+          template-file: exercise-toolkit/markdown-templates/step-feedback/welcome.md
+          template-vars: |
+            title=${{ inputs.exercise-title }}
+            login=${{ github.actor }}
+            intro_message=${{ inputs.intro-message }}
+
+      - name: Create issue - add welcome message
+        id: create-issue
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { data: issue } = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Exercise: ${process.env.EXERCISE_TITLE}`,
+              body: process.env.ISSUE_BODY
+            });
+            core.setOutput('ISSUE_URL', issue.html_url);
+            core.setOutput('ISSUE_NUMBER', issue.number);
+        env:
+          ISSUE_BODY: ${{ steps.build-issue-description.outputs.updated-text }}
+          EXERCISE_TITLE: ${{ inputs.exercise-title }}
 
   update_readme_buttons:
     name: Update README Buttons

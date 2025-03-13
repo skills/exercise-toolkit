@@ -1,0 +1,134 @@
+name: Start Exercise
+
+on:
+  workflow_call:
+    inputs:
+      exercise-title:
+        description: 'Title of the exercise'
+        required: true
+        type: string
+      intro-message:
+        description: 'Introduction message for the exercise'
+        required: true
+        type: string
+    outputs:
+      issue-url:
+        description: 'URL of the created issue'
+        value: ${{ jobs.create_exercise.outputs.issue-url }}
+      issue-number:
+        description: 'Number of the created issue'
+        value: ${{ jobs.create_exercise.outputs.issue-number }}
+
+permissions:
+  contents: write # Update Readme
+  actions: write # Disable workflows
+  issues: write # Create issue
+
+jobs:
+  disable_workflows:
+    name: Disable exercise workflows
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Disable all exercise workflows
+        run: |
+          # Find all workflow files that start with a number (0-9)
+          workflows=$(git ls-files | grep -E '^\.github/workflows/[0-9].*\.(yml|yaml)$')
+          for workflow in $workflows; do
+            workflow_name=$(basename $workflow)
+            echo "Disabling workflow: $workflow_name"
+            gh workflow disable "$workflow_name" || true
+          done
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+  create_exercise:
+    name: Create exercise issue
+    runs-on: ubuntu-latest
+
+    outputs:
+      issue-url: ${{ steps.create-issue.outputs.ISSUE_URL }}
+      issue-number: ${{ steps.create-issue.outputs.ISSUE_NUMBER }}
+
+    steps:
+      - name: Get response templates
+        uses: actions/checkout@v4
+        with:
+          repository: skills/exercise-toolkit
+          path: exercise-toolkit
+          ref: dev # TODO: Change to tag
+
+      - name: Build welcome message from template
+        id: build-issue-description
+        uses: skills/action-text-variables@v1
+        with:
+          template-file: exercise-toolkit/markdown-templates/step-feedback/welcome.md
+          template-vars: |
+            title=${{ inputs.exercise-title }}
+            login=${{ github.actor }}
+            intro_message=${{ inputs.intro-message }}
+
+      - name: Create issue - add welcome message
+        id: create-issue
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const { data: issue } = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Exercise: ${process.env.EXERCISE_TITLE}`,
+              body: process.env.ISSUE_BODY
+            });
+            core.setOutput('ISSUE_URL', issue.html_url);
+            core.setOutput('ISSUE_NUMBER', issue.number);
+        env:
+          ISSUE_BODY: ${{ steps.build-issue-description.outputs.updated-text }}
+          EXERCISE_TITLE: ${{ inputs.exercise-title }}
+
+  update_readme:
+    name: Update README
+    runs-on: ubuntu-latest
+    needs: create_exercise
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deactivate 'Start Excercise' button
+        run: |
+          # Remove href from 'Start Exercise' button
+          target='id="copy-exercise"[^>]*href="[^"]*"'
+          replacement='id="copy-exercise"'
+          sed -i "s|$target|$replacement|g" README.md
+
+          # Change color from green to gray
+          target=Copy_Exercise-008000
+          replacement=Copy_Exercise-AAA
+          sed -i "s|$target|$replacement|g" README.md
+
+      - name: Activate 'Start Exercise' button
+        run: |
+          # Add link to issue
+          target='id="start-exercise"'
+          replacement='id="start-exercise" href="../../issues/${{ needs.create_exercise.outputs.issue-number }}"'
+          sed -i "s|$target|$replacement|g" README.md
+
+          # Change color from gray to green
+          target=Start_Exercise-AAA
+          replacement=Start_Exercise-008000
+          sed -i "s|$target|$replacement|g" README.md
+
+      - name: Replace relative links in readme
+        run: |
+          target=../../
+          replacement=https://github.com/${{ github.repository }}/
+          sed -i "s|$target|$replacement|g" README.md
+
+      - name: Push README changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: "README.md"
+          message: "Start exercise"
+          default_author: github_actions

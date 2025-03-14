@@ -2,9 +2,9 @@
 
 ⭐️ Congratulations {{ login }}! ⭐️
 
-You completed this lesson! Nice work! 🥳
+You completed this exercise! Nice work! 🥳
 
-If you would like to practice again, you can retrace your steps below. Just press the **Start Lesson** button again.
+If you would like to practice again, you can retrace your steps below. Just press the **Start Exercise** button again.
 
 > [!TIP]
 > Mona won't grade you this time! 😉

@@ -3,8 +3,8 @@ name: Find Exercise Issue
 on:
   workflow_call:
     inputs:
-      issue-title-prefix:
-        description: 'Prefix to search for in issue titles'
+      issue-title-text:
+        description: 'Text to search for within issue titles'
         required: false
         default: 'Exercise'
         type: string
@@ -32,7 +32,7 @@ jobs:
       - id: find-exercise-issue
         uses: actions/github-script@v7
         env:
-          ISSUE_TITLE_PREFIX: ${{ inputs.issue-title-prefix }}
+          ISSUE_TITLE_PREFIX: ${{ inputs.issue-title-text }}
         with:
           script: |
             const issues = await github.rest.issues.listForRepo({

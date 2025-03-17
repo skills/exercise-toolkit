@@ -7,6 +7,11 @@ on:
         description: 'Title of the exercise'
         required: true
         type: string
+      issue-title-prefix:
+        description: 'Prefix for the exercise title in the issue'
+        required: false
+        type: string
+        default: 'Exercise: '
       intro-message:
         description: 'Introduction message for the exercise'
         required: true
@@ -79,7 +84,7 @@ jobs:
             const { data: issue } = await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: `Exercise: ${process.env.EXERCISE_TITLE}`,
+              title: `${process.env.ISSUE_TITLE_PREFIX}${process.env.EXERCISE_TITLE}`,
               body: process.env.ISSUE_BODY
             });
             core.setOutput('ISSUE_URL', issue.html_url);
@@ -87,6 +92,7 @@ jobs:
         env:
           ISSUE_BODY: ${{ steps.build-issue-description.outputs.updated-text }}
           EXERCISE_TITLE: ${{ inputs.exercise-title }}
+          ISSUE_TITLE_PREFIX: ${{ inputs.issue-title-prefix }}
 
   update_readme:
     name: Update README

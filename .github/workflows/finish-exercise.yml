@@ -22,14 +22,15 @@ jobs:
       - name: Get response templates
         uses: actions/checkout@v4
         with:
-          repository: skills/response-templates
-          path: skills-response-templates
+          repository: skills/exercise-toolkit
+          path: exercise-toolkit
+          ref: dev # TODO: Change to tag
 
       - name: Build message - congratulations
         id: build-message-congratulations
         uses: skills/action-text-variables@v1
         with:
-          template-file: skills-response-templates/readme/congratulations.md
+          template-file: exercise-toolkit/markdown-templates/readme/congratulations.md
           template-vars: |
             login=${{ github.actor }}
 

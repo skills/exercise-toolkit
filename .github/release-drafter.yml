@@ -1,0 +1,28 @@
+name-template: "v$RESOLVED_VERSION"
+tag-template: "v$RESOLVED_VERSION"
+
+# Emoji reference: https://gitmoji.carloscuesta.me/
+categories:
+  - title: 💥 Breaking changes
+    label: breaking
+  - title: 📋 Markdown Templates
+    label: templates
+  - title: ⚙️ Reusable Workflows
+    label: workflows
+  - title: 📚 Documentation
+    label: documentation
+  - title: 📦 Dependency updates
+    label: dependencies
+    collapse-after: 10
+  - title: ✍ Other changes
+
+
+template: |
+  # What's Changed
+
+  $CHANGES
+
+  **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
+
+exclude-labels:
+  - 'skip-changelog'

@@ -102,7 +102,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Deactivate 'Copy Excercise' button
+      - name: Deactivate 'Copy Exercise' button
         run: |
           # Remove href from 'Copy Exercise' button
           target='id="copy-exercise"[^>]*href="[^"]*"'

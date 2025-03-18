@@ -38,11 +38,10 @@ jobs:
         run: |
           # Add "Congratulations" to the start of the README
           orig_readme=$(cat README.md)
-          new_readme="$CONTRATULATIONS_TEXT $orig_readme"
+          new_readme="$CONGRATULATIONS_TEXT $orig_readme"
           echo "$new_readme" > README.md
         env:
-          CONTRATULATIONS_TEXT: ${{ steps.build-message-congratulations.outputs.updated-text }}
-
+          CONGRATULATIONS_TEXT: ${{ steps.build-message-congratulations.outputs.updated-text }}
       - name: Update README - congratulations
         uses: EndBug/add-and-commit@v9
         with:

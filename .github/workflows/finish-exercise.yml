@@ -24,7 +24,7 @@ jobs:
         with:
           repository: skills/exercise-toolkit
           path: exercise-toolkit
-          ref: dev # TODO: Change to tag
+          ref: main # TODO: Change to tag
 
       - name: Build message - congratulations
         id: build-message-congratulations
@@ -59,7 +59,7 @@ jobs:
         with:
           repository: skills/exercise-toolkit
           path: exercise-toolkit
-          ref: dev # TODO: Change to tag
+          ref: main # TODO: Change to tag
 
       - name: Build message - exercise finished
         id: build-finish-message

@@ -64,7 +64,7 @@ jobs:
         with:
           repository: skills/exercise-toolkit
           path: exercise-toolkit
-          ref: dev # TODO: Change to tag
+          ref: main # TODO: Change to tag
 
       - name: Build welcome message from template
         id: build-issue-description

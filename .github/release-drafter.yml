@@ -9,13 +9,14 @@ categories:
     label: templates
   - title: ⚙️ Reusable Workflows
     label: workflows
+  - title: 🔧 Maintenance
+    label: maintenance
   - title: 📚 Documentation
     label: documentation
   - title: 📦 Dependency updates
     label: dependencies
     collapse-after: 10
   - title: ✍ Other changes
-
 
 template: |
   # What's Changed
@@ -25,4 +26,4 @@ template: |
   **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
 
 exclude-labels:
-  - 'skip-changelog'
+  - "skip-changelog"

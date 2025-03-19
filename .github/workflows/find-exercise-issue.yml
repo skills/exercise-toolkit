@@ -35,17 +35,30 @@ jobs:
           ISSUE_TITLE_PREFIX: ${{ inputs.issue-title-text }}
         with:
           script: |
-            const issues = await github.rest.issues.listForRepo({
+            const response = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'open',
-              per_page: 1
+              sort: 'created',    // Sort by creation date
+              direction: 'desc',  // Newest first (descending order)
+              per_page: 50
             });
 
-            const issue = issues.data.find(issue => issue.title.includes(process.env.ISSUE_TITLE_PREFIX ));
+            // Get just the issues, not pull requests
+            const issues = response.data.filter(item => !item.pull_request);
+
+            // Start a collapsible group in the logs
+            core.startGroup(`Found ${issues.length} open issues in total`);
+            issues.forEach(issue => {
+              core.info(`#${issue.number}: ${issue.html_url}`);
+            });
+            core.endGroup();
+
+            const issue = issues.find(issue => issue.title.includes(process.env.ISSUE_TITLE_PREFIX));
             if (!issue) {
               throw new Error('No exercise issue found');
             }
+            core.info(`Exercise issue found: #${issue.number} (${issue.html_url})`);
 
             core.setOutput('ISSUE_URL', issue.html_url);
             core.setOutput('ISSUE_NUMBER', issue.number);

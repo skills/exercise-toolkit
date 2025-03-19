@@ -44,8 +44,12 @@ jobs:
               per_page: 50
             });
 
-            // Log the total number of issues found
-            core.info(`Found ${issues.data.length} open issues in total`);
+            // Start a collapsible group in the logs
+            core.startGroup('Found ${issues.data.length} open issues in total');
+            issues.forEach(issue => {
+              core.info(`#${issue.number}: ${issue.title}`);
+            });
+            core.endGroup();
 
             const issue = issues.data.find(issue => issue.title.includes(process.env.ISSUE_TITLE_PREFIX));
             if (!issue) {

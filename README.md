@@ -8,11 +8,83 @@
 
 This repository serves as a comprehensive toolkit for creating and managing GitHub Skills exercises. It provides a collection of tools, templates, and utilities designed to streamline the process of developing educational content for GitHub Skills.
 
-## Contents
+### Contents
 
 - **[.github/workflows](/.github/workflows)**: GitHub Actions workflows for automating common parts of Skills Exercises
 - **[markdown-templates](/markdown-templates)**: Ready-to-use Markdown templates for creating consistent exercise documentation, instructions, and README files
 
-## Contributing
+## Examples
 
-For contribution guidelines, see our [CONTRIBUTING.md](/CONTRIBUTING.md) file.
+### ⚙️ Reusable Workflows
+
+For a full list of reusable workflows go to the **[.github/workflows](/.github/workflows)** directory.
+
+#### Starting an exercise
+
+```yaml
+jobs:
+  start_exercise:
+    name: Start Exercise
+    uses: skills/exercise-toolkit/.github/workflows/start-exercise.yml@<git-tag>
+    with:
+      exercise-title: "Introduction to GitHub Copilot"
+      intro-message: "Let's get you started with GitHub Copilot :robot: ! We will learn ..."
+
+```
+
+#### Finding an exercise
+
+```yaml
+
+jobs:
+  find_exercise:
+    name: Find Exercise Issue
+    uses: skills/exercise-toolkit/.github/workflows/find-exercise-issue.yml@<git-tag>
+
+```
+
+
+### 📋 Markdown Templates
+
+For a full list of markdown templates go to the **[markdown-templates](/markdown-templates)** directory.
+
+```yaml
+steps:
+  - name: Get markdown templates
+    uses: actions/checkout@v4
+    with:
+      repository: skills/exercise-toolkit
+      path: exercise-toolkit
+      ref: <git-tag>
+
+  - name: Use the template
+    run: |
+      cat exercise-toolkit/markdown-templates/step-feedback/checking-work.md
+
+```
+
+Markdown templates are often used together with [skills/action-text-variables](https://github.com/skills/action-text-variables) GitHub Action
+
+```yaml
+steps:
+  - name: Get markdown templates
+    uses: actions/checkout@v4
+    with:
+      repository: skills/exercise-toolkit
+      path: exercise-toolkit
+      ref: <git-tag>
+
+  - name: Build message - congratulations
+    id: build-message-congratulations
+    uses: skills/action-text-variables@v1
+    with:
+      template-file: exercise-toolkit/markdown-templates/readme/congratulations.md
+      template-vars: |
+        login=${{ github.actor }}
+
+  - name: Echo updated text
+    run: echo "$UPDATED_TEXT"
+    env:
+      UPDATED_TEXT: ${{ steps.build-message-congratulations.outputs.updated-text }}
+
+```

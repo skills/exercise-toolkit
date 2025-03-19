@@ -8,7 +8,7 @@ templates:
 # Workflows label for changes to GitHub workflow files (excluding changes that only change workflows prefixed with _)
 workflows:
   - changed-files:
-      - all-globs-to-any-files:
+      - all-globs-to-any-file:
         - ".github/workflows/*.yml"
         - "!.github/workflows/_*.yml"
 

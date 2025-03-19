@@ -39,13 +39,20 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'open',
-              per_page: 1
+              sort: 'created',    // Sort by creation date
+              direction: 'desc',  // Newest first (descending order)
+              per_page: 50
             });
 
-            const issue = issues.data.find(issue => issue.title.includes(process.env.ISSUE_TITLE_PREFIX ));
+            // Log the total number of issues found
+            core.info(`Found ${issues.data.length} open issues in total`);
+
+            const issue = issues.data.find(issue => issue.title.includes(process.env.ISSUE_TITLE_PREFIX));
             if (!issue) {
               throw new Error('No exercise issue found');
             }
+            core.info(`Exercise issue found: #${issue.number} (${issue.html_url})`);
+
 
             core.setOutput('ISSUE_URL', issue.html_url);
             core.setOutput('ISSUE_NUMBER', issue.number);

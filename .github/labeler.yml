@@ -3,18 +3,18 @@
 # Templates label for changes to markdown-templates directory
 templates:
   - changed-files:
-      - any-glob-to-any-file: "markdown-templates/**/*"
+    - any-glob-to-any-file: "markdown-templates/**/*"
 
 # Workflows label for changes to GitHub workflow files (excluding changes that only change workflows prefixed with _)
 workflows:
   - changed-files:
-      - all-globs-to-any-files:
-        - ".github/workflows/*.yml"
-        - "!.github/workflows/_*.yml"
+    - all-globs-to-any-files:
+      - ".github/workflows/*.yml"
+      - "!.github/workflows/_*.yml"
 
 # Documentation label for root level .md files and files in /docs/ directory
 documentation:
   - changed-files:
-      - any-glob-to-any-file:
-          - "*.md"
-          - "docs/**/*"
+    - any-glob-to-any-file:
+        - "*.md"
+        - "docs/**/*"

@@ -42,7 +42,7 @@ jobs:
           # Find all workflow files that start with a number (0-9)
           workflows=$(git ls-files | grep -E '^\.github/workflows/[0-9].*\.(yml|yaml)$')
           for workflow in $workflows; do
-            workflow_name=$(basename $workflow)
+            workflow_name="$(basename "$workflow")"
             echo "Disabling workflow: $workflow_name"
             gh workflow disable "$workflow_name" || true
           done
@@ -78,7 +78,7 @@ jobs:
 
       - name: Create issue - add welcome message
         id: create-issue
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             const { data: issue } = await github.rest.issues.create({

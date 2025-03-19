@@ -21,3 +21,5 @@ jobs:
         uses: super-linter/super-linter@v7.3.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_GITHUB_ACTIONS: true
+          VALIDATE_CHECKOV: true

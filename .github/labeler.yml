@@ -9,8 +9,8 @@ templates:
 workflows:
   - changed-files:
       - all-globs-to-any-file:
-        - ".github/workflows/*.yml"
-        - "!.github/workflows/_*.yml"
+          - ".github/workflows/*.yml"
+          - "!.github/workflows/_*.yml"
 
 # Documentation label for root level .md files and files in /docs/ directory
 documentation:
@@ -18,3 +18,10 @@ documentation:
       - any-glob-to-any-file:
           - "*.md"
           - "docs/**/*"
+
+# Maintenance label for changes to .github directory files (but not subdirectories) and workflows with _ prefix
+maintenance:
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/*"
+          - ".github/workflows/_*.yml"

@@ -117,6 +117,7 @@ jobs:
           template-vars: |
             title=${{ inputs.exercise-title }}
             login=${{ github.actor }}
+            link_to_exercise=${{ needs.create_exercise.outputs.issue-url }}
 
       - name: Overwrite README
         env:

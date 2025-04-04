@@ -8,7 +8,7 @@ This is your personal copy of the **{{ title }}** exercise.
 
 **Ready to get started?**
 
-[![](https://img.shields.io/badge/Go%20to%20Exercise-%E2%86%92-brightgreen?style=for-the-badge&logo=github)]({{{ link_to_exercise }}})
+[![](https://img.shields.io/badge/Go%20to%20Exercise-%E2%86%92-brightgreen?style=for-the-badge&logo=github)]({{{ issue_url }}})
 
 _You can come back to the exercise at any point in time if you decide to do it in parts!_
 

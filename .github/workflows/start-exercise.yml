@@ -102,35 +102,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Deactivate 'Copy Exercise' button
-        run: |
-          # Remove href from 'Copy Exercise' button
-          target='id="copy-exercise"[^>]*href="[^"]*"'
-          replacement='id="copy-exercise"'
-          sed -i "s|$target|$replacement|g" README.md
+      - name: Get response templates
+        uses: actions/checkout@v4
+        with:
+          repository: skills/exercise-toolkit
+          path: exercise-toolkit
+          ref: start-exercise-updates
 
-          # Change color from green to gray
-          target=Copy_Exercise-008000
-          replacement=Copy_Exercise-AAA
-          sed -i "s|$target|$replacement|g" README.md
+      - name: Build welcome message from template
+        id: build-new-readme
+        uses: skills/action-text-variables@v1
+        with:
+          template-file: exercise-toolkit/markdown-templates/readme/exercise-started.md
+          template-vars: |
+            title=${{ inputs.exercise-title }}
+            login=${{ github.actor }}
 
-      - name: Activate 'Start Exercise' button
-        run: |
-          # Add link to issue
-          target='id="start-exercise"'
-          replacement='id="start-exercise" href="../../issues/${{ needs.create_exercise.outputs.issue-number }}"'
-          sed -i "s|$target|$replacement|g" README.md
-
-          # Change color from gray to green
-          target=Start_Exercise-AAA
-          replacement=Start_Exercise-008000
-          sed -i "s|$target|$replacement|g" README.md
-
-      - name: Replace relative links
-        run: |
-          target=../../
-          replacement=https://github.com/${{ github.repository }}/
-          sed -i "s|$target|$replacement|g" README.md
+      - name: Overwrite README
+        env:
+          README_TEXT: ${{ steps.build-new-readme.outputs.updated-text }}
+        run: echo "$README_TEXT" > README.md
 
       - name: Commit changes
         uses: EndBug/add-and-commit@v9

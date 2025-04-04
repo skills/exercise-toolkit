@@ -1,17 +1,15 @@
-# The exercise is ready for you  🧑‍🎓 :memo:
+# {{ title }}
 
 <img src="https://octodex.github.com/images/Professortocat_v2.png" align="right" height="200px" />
 
 Hey **{{ login }}**!
 
-This is your personal copy of the **{{ title }}** exercise.
+Mona here. I'm done preparing your exercise. Hope you enjoy! 💚
 
-**Ready to get started?**
-
-[![](https://img.shields.io/badge/Go%20to%20Exercise-%E2%86%92-brightgreen?style=for-the-badge&logo=github)]({{{ issue_url }}})
-
-_You can come back to the exercise at any point in time if you decide to do it in parts!_
-
+Remember, it's self-paced so feel fee to take a break! ☕️
+ 
+[![](https://img.shields.io/badge/Go%20to%20Exercise-%E2%86%92-1f883d?style=for-the-badge&logo=github&labelColor=197935)]({{{ issue_url }}})
+ 
 ---
 
 Get help: [Post in our discussion board](https://github.com/orgs/skills/discussions/categories/) &bull; [Review the GitHub status page](https://www.githubstatus.com/)

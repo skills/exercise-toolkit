@@ -107,7 +107,7 @@ jobs:
         with:
           repository: skills/exercise-toolkit
           path: exercise-toolkit
-          ref: v0.2.0
+          ref: 284593fb53eda6c6735a0971b76b8809dc38eaeb
 
       - name: Build welcome message from template
         id: build-new-readme

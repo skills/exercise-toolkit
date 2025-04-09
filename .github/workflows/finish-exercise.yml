@@ -28,24 +28,22 @@ jobs:
         with:
           repository: skills/exercise-toolkit
           path: exercise-toolkit
-          ref: v0.1.0
+          ref: 5da8e8a723fc1ee7518ff7f2f93d8a8d19df1cde
 
-      - name: Build message - congratulations
-        id: build-message-congratulations
+      - name: Build congratulations message from template
+        id: build-new-readme
         uses: skills/action-text-variables@v1
         with:
-          template-file: exercise-toolkit/markdown-templates/readme/congratulations.md
+          template-file: exercise-toolkit/markdown-templates/readme/exercise-finished.md
           template-vars: |
             login=${{ github.actor }}
+            issue_url=${{ inputs.issue-url }}
 
-      - name: Update README - congratulations
-        run: |
-          # Add "Congratulations" to the start of the README
-          orig_readme=$(cat README.md)
-          new_readme="$CONGRATULATIONS_TEXT $orig_readme"
-          echo "$new_readme" > README.md
+      - name: Overwrite README
         env:
-          CONGRATULATIONS_TEXT: ${{ steps.build-message-congratulations.outputs.updated-text }}
+          README_TEXT: ${{ steps.build-new-readme.outputs.updated-text }}
+        run: echo "$README_TEXT" > README.md
+
       - name: Update README - congratulations
         uses: EndBug/add-and-commit@v9
         with:

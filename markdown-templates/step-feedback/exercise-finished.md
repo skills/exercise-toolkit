@@ -1,6 +1,6 @@
 <img src="https://octodex.github.com/images/welcometocat.png" align="left" height="150px" />
 
-Congratulations **{{ login }}**! You finished the exercise! 🎉🎉🎉
+Congratulations @{{ login }}! You finished the exercise! 🎉🎉🎉
 
 We've updated the repository with a couple changes to highlight your success!
 

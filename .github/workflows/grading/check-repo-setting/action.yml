@@ -30,10 +30,12 @@ inputs:
   # Optional inputs for this grading workflow
   owner:
     description: "The owner of the repository"
-    required: true
+    required: false
+    default: "${{ github.repository_owner }}"
   repo-name:
     description: "The name of the repository"
-    required: true
+    required: false
+    default: "${{ github.event.repository.name }}"
 
 outputs:
   result:
@@ -71,16 +73,6 @@ runs:
             "name": process.env.CHECK_NAME,
             "passed": false,
             "message": ""
-          }
-
-          // Use current repository if not provided
-          if (!process.env.OWNER ) {
-            process.env.OWNER = context.repo.owner;
-            console.log('Using current owner:', process.env.OWNER);
-          }
-          if (!process.env.REPO_NAME) {
-            process.env.REPO_NAME = context.repo.repo;
-            console.log('Using current repository:', process.env.REPO_NAME);
           }
 
           try {

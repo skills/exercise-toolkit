@@ -7,10 +7,12 @@ This action checks a specified repository setting and verifies if it matches an 
 ### Required Inputs
 
 - `check-name`: The name of the check that will appear in the results
-- `setting-name`: The full path to the repository setting to check (e.g., "security_and_analysis.secret_scanning.status")
+- `setting-name`: The full path to the [repository setting](https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#get-a-repository) to check, using dot notation. Example `owner.login`
 - `setting-expected-value`: The expected value of the repository setting
 - `pass-message`: The message to return if the check passes
 - `fail-message`: The message to return if the check fails
+
+The `setting-name` value can be any entry returned by the [get repo] api call.
 
 ### Optional Inputs
 

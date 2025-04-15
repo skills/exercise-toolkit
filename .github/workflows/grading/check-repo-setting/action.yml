@@ -44,9 +44,6 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: "hello"
-      run: echo "Hello from the check repository setting workflow!"
-
     - name: Check repository setting
       if: true
       uses: actions/github-script@v7

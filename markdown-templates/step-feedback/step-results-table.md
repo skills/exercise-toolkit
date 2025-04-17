@@ -19,11 +19,10 @@ Some checks failed. Please review the results below and try again.
 Time to find the bug! 🤔
 {{/passed}}
 
-| Check | Status |
-| ----- | ------ |
-
+| Status | Name |
+| --- | --- |
 {{#results_table}}
-| {{ message }} | {{#passed}}✅ - Pass{{/passed}}{{^passed}}❌ - Fail{{/passed}} |
+| {{#passed}}✅ - Pass{{/passed}}{{^passed}}❌ - Fail{{/passed}} | {{ name }} |
 {{/results_table}}
 
 {{#tips.length}}

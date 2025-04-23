@@ -64,7 +64,7 @@ jobs:
         with:
           repository: skills/exercise-toolkit
           path: exercise-toolkit
-          ref: v0.1.0
+          ref: 7aa247792cb4021203b7c05e65f9128d1c7d2312
 
       - name: Build welcome message from template
         id: build-issue-description
@@ -107,7 +107,7 @@ jobs:
         with:
           repository: skills/exercise-toolkit
           path: exercise-toolkit
-          ref: 284593fb53eda6c6735a0971b76b8809dc38eaeb
+          ref: 7aa247792cb4021203b7c05e65f9128d1c7d2312
 
       - name: Build welcome message from template
         id: build-new-readme

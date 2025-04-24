@@ -76,11 +76,11 @@ steps:
 
   - name: Build message - congratulations
     id: build-message-congratulations
-    uses: skills/action-text-variables@v1
+    uses: skills/action-text-variables@v2
     with:
       template-file: exercise-toolkit/markdown-templates/readme/congratulations.md
       template-vars: |
-        login=${{ github.actor }}
+        login: ${{ github.actor }}
 
   - name: Echo updated text
     run: echo "$UPDATED_TEXT"

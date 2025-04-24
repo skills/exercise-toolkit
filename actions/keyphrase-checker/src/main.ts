@@ -10,12 +10,8 @@ async function run(): Promise<void> {
     const textFile: string = core.getInput("text-file", { required: false });
     const text: string = core.getInput("text", { required: false });
     const keyphrase: string = core.getInput("keyphrase", { required: true });
-    const caseSensitiveInput: string =
-      core.getInput("case-sensitive", { required: false }) || "true";
-    const caseSensitive: boolean = caseSensitiveInput.toLowerCase() === "true";
-    const minimumOccurences: number = parseInt(
-      core.getInput("minimum_occurences", { required: false }) || "1",
-      10
+    const caseSensitive: boolean = core.getBooleanInput("case-sensitive", { required: true });
+    const minimumOccurences: number = parseInt(core.getInput("minimum_occurences", { required: true })
     );
 
     // Check that exactly one of text or textFile is provided

@@ -11,8 +11,9 @@
       "cwd": "${workspaceFolder}/actions/keyphrase-checker",
       "console": "integratedTerminal",
       "env": {
-        "INPUT_FILE": "README.md",
+        "INPUT_TEXT-FILE": "README.md",
         "INPUT_KEYPHRASE": "GitHub",
+        "INPUT_CASE-SENSITIVE": "true",
         "INPUT_MINIMUM_OCCURENCES": "2",
         "GITHUB_WORKSPACE": "${workspaceFolder}"
       }

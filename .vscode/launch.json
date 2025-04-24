@@ -1,0 +1,21 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Keyphrase Checker Action",
+      "skipFiles": ["<node_internals>/**"],
+      "runtimeArgs": ["-r", "ts-node/register"],
+      "program": "${workspaceFolder}/actions/keyphrase-checker/src/index.ts",
+      "cwd": "${workspaceFolder}/actions/keyphrase-checker",
+      "console": "integratedTerminal",
+      "env": {
+        "INPUT_FILE": "README.md",
+        "INPUT_KEYPHRASE": "GitHub",
+        "INPUT_MINIMUM_OCCURENCES": "2",
+        "GITHUB_WORKSPACE": "${workspaceFolder}"
+      }
+    }
+  ]
+}

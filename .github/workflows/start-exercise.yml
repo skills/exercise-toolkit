@@ -68,13 +68,13 @@ jobs:
 
       - name: Build welcome message from template
         id: build-issue-description
-        uses: skills/action-text-variables@v1
+        uses: skills/action-text-variables@v2
         with:
           template-file: exercise-toolkit/markdown-templates/step-feedback/welcome.md
           template-vars: |
-            title=${{ inputs.exercise-title }}
-            login=${{ github.actor }}
-            intro_message=${{ inputs.intro-message }}
+            title: ${{ inputs.exercise-title }}
+            login: ${{ github.actor }}
+            intro_message: ${{ inputs.intro-message }}
 
       - name: Create issue - add welcome message
         id: create-issue
@@ -111,13 +111,13 @@ jobs:
 
       - name: Build welcome message from template
         id: build-new-readme
-        uses: skills/action-text-variables@v1
+        uses: skills/action-text-variables@v2
         with:
           template-file: exercise-toolkit/markdown-templates/readme/exercise-started.md
           template-vars: |
-            title=${{ inputs.exercise-title }}
-            login=${{ github.actor }}
-            issue_url=${{ needs.create_exercise.outputs.issue-url }}
+            title: ${{ inputs.exercise-title }}
+            login: ${{ github.actor }}
+            issue_url: ${{ needs.create_exercise.outputs.issue-url }}
 
       - name: Overwrite README
         env:

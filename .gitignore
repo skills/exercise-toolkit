@@ -2,11 +2,6 @@
 node_modules/
 jspm_packages/
 
-# Build outputs
-dist/
-build/
-*.tsbuildinfo
-
 # Coverage directories used by tools like istanbul, jest
 coverage/
 .nyc_output/

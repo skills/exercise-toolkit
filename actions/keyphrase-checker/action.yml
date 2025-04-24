@@ -1,23 +1,30 @@
-name: 'Keyphrase Checker'
-description: 'Check a file for the number of occurrences of a specific keyphrase'
-author: 'GitHub Skills'
+name: "Keyphrase Checker"
+description: "Check a file or text for the number of occurrences of a specific keyphrase"
+author: "GitHub Skills"
 inputs:
-  file:
-    description: 'Path to the file to check'
-    required: true
+  text-file:
+    description: "Path to the file to check (use either this or text input)"
+    required: false
+  text:
+    description: "Direct text content to check (use either this or text-file input)"
+    required: false
   keyphrase:
-    description: 'The keyphrase to search for in the file'
+    description: "The keyphrase to search for in the file or text"
     required: true
   minimum_occurences:
-    description: 'The minimum number of occurrences required'
+    description: "The minimum number of occurrences required"
     required: false
-    default: '1'
+    default: "1"
+  case-sensitive:
+    description: "Whether the search should be case-sensitive"
+    required: false
+    default: "true"
 outputs:
   occurences:
-    description: 'The number of occurrences found'
+    description: "The number of occurrences found"
 runs:
-  using: 'node20'
-  main: 'dist/index.js'
+  using: "node20"
+  main: "dist/index.js"
 branding:
-  icon: 'search'
-  color: 'green'
+  icon: "search"
+  color: "green"

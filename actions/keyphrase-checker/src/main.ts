@@ -7,32 +7,55 @@ import * as fs from "fs";
 async function run(): Promise<void> {
   try {
     // Get inputs from action definition
-    const filePath: string = core.getInput("file", { required: true });
+    const textFile: string = core.getInput("text-file", { required: false });
+    const text: string = core.getInput("text", { required: false });
     const keyphrase: string = core.getInput("keyphrase", { required: true });
+    const caseSensitiveInput: string =
+      core.getInput("case-sensitive", { required: false }) || "true";
+    const caseSensitive: boolean = caseSensitiveInput.toLowerCase() === "true";
     const minimumOccurences: number = parseInt(
       core.getInput("minimum_occurences", { required: false }) || "1",
       10
     );
 
-    // Check if file exists
-    if (!fs.existsSync(filePath)) {
-      core.setFailed(`File does not exist: ${filePath}`);
+    // Check that exactly one of text or textFile is provided
+    if ((!textFile && !text) || (textFile && text)) {
+      core.setFailed("Exactly one of 'text-file' or 'text' inputs must be provided");
       return;
     }
 
-    // Read file content
-    const fileContent: string = fs.readFileSync(filePath, "utf8");
+    let contentToCheck: string;
 
-    // Count occurrences of keyphrase
-    const regex: RegExp = new RegExp(keyphrase, "g");
-    const matches: string[] | null = fileContent.match(regex);
+    // Get content based on which input was provided
+    if (textFile) {
+      // Check if file exists
+      if (!fs.existsSync(textFile)) {
+        core.setFailed(`File does not exist: ${textFile}`);
+        return;
+      }
+
+      // Read file content
+      contentToCheck = fs.readFileSync(textFile, "utf8");
+    } else {
+      // Use the provided text content
+      contentToCheck = text;
+    }
+
+    // Create regex for the keyphrase with case sensitivity option
+    const regexFlags: string = caseSensitive ? "g" : "gi";
+    const regex: RegExp = new RegExp(keyphrase, regexFlags);
+    const matches: string[] | null = contentToCheck.match(regex);
     const occurences: number = matches ? matches.length : 0;
 
     // Set the count as an output
     core.setOutput("occurences", occurences);
 
     // Log the results for easier debugging
-    core.info(`Found ${occurences} occurrences of "${keyphrase}" in ${filePath}`);
+    core.info(
+      `Found ${occurences} occurrences of "${keyphrase}" ${
+        caseSensitive ? "(case-sensitive)" : "(case-insensitive)"
+      } in ${textFile ? textFile : "provided text"}`
+    );
 
     // Check if the minimum requirement is met
     if (occurences < minimumOccurences) {

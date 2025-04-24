@@ -32,7 +32,6 @@
   },
   "dependencies": {
     "@actions/core": "^1.11.1",
-    "@actions/github": "^6.0.0",
-    "fs": "0.0.1-security"
+    "@actions/github": "^6.0.0"
   }
 }

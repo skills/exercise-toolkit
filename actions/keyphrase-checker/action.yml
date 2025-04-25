@@ -18,7 +18,7 @@ inputs:
   case-sensitive:
     description: "Whether the search should be case-sensitive"
     required: false
-    default: "true"
+    default: "false"
 outputs:
   occurences:
     description: "The number of occurrences found"

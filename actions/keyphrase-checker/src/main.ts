@@ -51,7 +51,7 @@ async function run(): Promise<void> {
     core.info(
       `Found ${occurences} occurrences of "${keyphrase}" ${
         caseSensitive ? "(case-sensitive)" : "(case-insensitive)"
-      } in ${textFile ? textFile : "provided text"}`
+      } in ${textFile || "provided text"}`
     );
 
     // Check if the minimum requirement is met

@@ -75,7 +75,7 @@ async function run() {
         // Set the count as an output
         core.setOutput("occurences", occurences);
         // Log the results for easier debugging
-        core.info(`Found ${occurences} occurrences of "${keyphrase}" ${caseSensitive ? "(case-sensitive)" : "(case-insensitive)"} in ${textFile ? textFile : "provided text"}`);
+        core.info(`Found ${occurences} occurrences of "${keyphrase}" ${caseSensitive ? "(case-sensitive)" : "(case-insensitive)"} in ${textFile || "provided text"}`);
         // Check if the minimum requirement is met
         if (occurences < minimumOccurences) {
             core.setFailed(`Expected at least ${minimumOccurences} occurrences of "${keyphrase}", but found only ${occurences}`);

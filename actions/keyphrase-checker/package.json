@@ -1,6 +1,5 @@
 {
   "name": "keyphrase-checker-action",
-  "main": "index.js",
   "scripts": {
     "build": "tsc",
     "package": "ncc build dist/index.js -o dist",
@@ -31,7 +30,6 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "@actions/core": "^1.11.1",
-    "@actions/github": "^6.0.0"
+    "@actions/core": "^1.11.1"
   }
 }

@@ -14,7 +14,7 @@
         "INPUT_TEXT-FILE": "README.md",
         "INPUT_KEYPHRASE": "GitHub",
         "INPUT_CASE-SENSITIVE": "true",
-        "INPUT_MINIMUM-OCCURENCES": "2",
+        "INPUT_MINIMUM-OCCURENCES": 2,
         "GITHUB_WORKSPACE": "${workspaceFolder}"
       }
     }

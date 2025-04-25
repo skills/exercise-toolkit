@@ -138,7 +138,7 @@ jobs:
         with:
           text-file: ./actions/keyphrase-checker/__tests__/test-mixed-case.md
           keyphrase: "github"
-          minimum-occurences: "3"
+          minimum-occurences: 3
           case-sensitive: true
 
       - name: Check output for text file test

@@ -38,14 +38,7 @@ describe("Keyphrase Checker Action", () => {
           return "";
       }
     });
-    mockCore.getBooleanInput.mockImplementation((name) => {
-      switch (name) {
-        case "case-sensitive":
-          return true;
-        default:
-          return false;
-      }
-    });
+    mockCore.getBooleanInput.mockReturnValue(true);
 
     // Run the action
     await run();
@@ -72,14 +65,7 @@ describe("Keyphrase Checker Action", () => {
           return "";
       }
     });
-    mockCore.getBooleanInput.mockImplementation((name) => {
-      switch (name) {
-        case "case-sensitive":
-          return true;
-        default:
-          return false;
-      }
-    });
+    mockCore.getBooleanInput.mockReturnValue(true);
 
     // Run the action
     await run();
@@ -96,29 +82,22 @@ describe("Keyphrase Checker Action", () => {
     mockCore.getInput.mockImplementation((name) => {
       switch (name) {
         case "text":
-          return "GitHub Skills are interactive. GitHub Skills help you learn GitHub.";
+          return "Hey @professortocat, I'm finished with my task";
         case "keyphrase":
-          return "GitHub";
+          return "professortocat";
         case "minimum-occurences":
-          return "2";
+          return "1";
         default:
           return "";
       }
     });
-    mockCore.getBooleanInput.mockImplementation((name) => {
-      switch (name) {
-        case "case-sensitive":
-          return true;
-        default:
-          return false;
-      }
-    });
+    mockCore.getBooleanInput.mockReturnValue(true);
 
     // Run the action
     await run();
 
     // Check expectations
-    expect(mockCore.setOutput).toHaveBeenCalledWith("occurences", 3);
+    expect(mockCore.setOutput).toHaveBeenCalledWith("occurences", 1);
     expect(mockCore.setFailed).not.toHaveBeenCalled();
   });
 
@@ -139,14 +118,7 @@ describe("Keyphrase Checker Action", () => {
           return "";
       }
     });
-    mockCore.getBooleanInput.mockImplementation((name) => {
-      switch (name) {
-        case "case-sensitive":
-          return false;
-        default:
-          return true;
-      }
-    });
+    mockCore.getBooleanInput.mockReturnValue(false);
 
     // Run the action
     await run();
@@ -172,14 +144,7 @@ describe("Keyphrase Checker Action", () => {
           return "";
       }
     });
-    mockCore.getBooleanInput.mockImplementation((name) => {
-      switch (name) {
-        case "case-sensitive":
-          return true;
-        default:
-          return false;
-      }
-    });
+    mockCore.getBooleanInput.mockReturnValue(true);
 
     // Run the action
     await run();
@@ -200,14 +165,7 @@ describe("Keyphrase Checker Action", () => {
           return "";
       }
     });
-    mockCore.getBooleanInput.mockImplementation((name) => {
-      switch (name) {
-        case "case-sensitive":
-          return true;
-        default:
-          return false;
-      }
-    });
+    mockCore.getBooleanInput.mockReturnValue(true);
 
     // Run the action
     await run();
@@ -236,14 +194,7 @@ describe("Keyphrase Checker Action", () => {
           return "";
       }
     });
-    mockCore.getBooleanInput.mockImplementation((name) => {
-      switch (name) {
-        case "case-sensitive":
-          return true;
-        default:
-          return false;
-      }
-    });
+    mockCore.getBooleanInput.mockReturnValue(true);
 
     // Run the action
     await run();

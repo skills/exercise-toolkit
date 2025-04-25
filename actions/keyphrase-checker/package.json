@@ -11,7 +11,7 @@
   "keywords": [],
   "author": "GitHub Skills",
   "license": "MIT",
-  "description": "",
+  "description": "A GitHub Action that checks for the occurrence of a specified keyphrase.",
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",

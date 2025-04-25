@@ -9,7 +9,7 @@ A GitHub Action that checks for the occurrence of a specified keyphrase in a fil
 | `text-file`          | Path to the file to check (use either this or `text`)         | No\*     | N/A     |
 | `text`               | Direct text content to check (use either this or `text-file`) | No\*     | N/A     |
 | `keyphrase`          | The keyphrase to search for                                   | Yes      | N/A     |
-| `minimum_occurences` | Minimum number of occurrences required                        | No       | 1       |
+| `minimum-occurences` | Minimum number of occurrences required                        | No       | 1       |
 | `case-sensitive`     | Whether the search should be case-sensitive                   | No       | true    |
 
 \*Note: Exactly one of `text-file` or `text` must be provided.
@@ -46,7 +46,7 @@ jobs:
         with:
           text-file: src/app.js
           keyphrase: "participant"
-          minimum_occurences: 3
+          minimum-occurences: 3
           case-sensitive: false
 
       - name: Build message - step results
@@ -73,7 +73,7 @@ jobs:
   with:
     text-file: README.md
     keyphrase: "GitHub"
-    minimum_occurences: 3
+    minimum-occurences: 3
     case-sensitive: true
 ```
 

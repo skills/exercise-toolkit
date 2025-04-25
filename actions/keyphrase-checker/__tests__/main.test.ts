@@ -32,7 +32,7 @@ describe("Keyphrase Checker Action", () => {
           return testFilePath;
         case "keyphrase":
           return "GitHub";
-        case "minimum_occurences":
+        case "minimum-occurences":
           return "2";
         default:
           return "";
@@ -66,7 +66,7 @@ describe("Keyphrase Checker Action", () => {
           return testFilePath;
         case "keyphrase":
           return "GitHub";
-        case "minimum_occurences":
+        case "minimum-occurences":
           return "3";
         default:
           return "";
@@ -99,7 +99,7 @@ describe("Keyphrase Checker Action", () => {
           return "GitHub Skills are interactive. GitHub Skills help you learn GitHub.";
         case "keyphrase":
           return "GitHub";
-        case "minimum_occurences":
+        case "minimum-occurences":
           return "2";
         default:
           return "";
@@ -133,7 +133,7 @@ describe("Keyphrase Checker Action", () => {
           return testFilePath;
         case "keyphrase":
           return "GitHub";
-        case "minimum_occurences":
+        case "minimum-occurences":
           return "3";
         default:
           return "";
@@ -166,7 +166,7 @@ describe("Keyphrase Checker Action", () => {
           return nonExistentFilePath;
         case "keyphrase":
           return "GitHub";
-        case "minimum_occurences":
+        case "minimum-occurences":
           return "1";
         default:
           return "";
@@ -194,7 +194,7 @@ describe("Keyphrase Checker Action", () => {
       switch (name) {
         case "keyphrase":
           return "GitHub";
-        case "minimum_occurences":
+        case "minimum-occurences":
           return "1";
         default:
           return "";
@@ -230,7 +230,7 @@ describe("Keyphrase Checker Action", () => {
           return "Some text";
         case "keyphrase":
           return "GitHub";
-        case "minimum_occurences":
+        case "minimum-occurences":
           return "1";
         default:
           return "";

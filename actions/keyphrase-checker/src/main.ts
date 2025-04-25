@@ -11,7 +11,8 @@ async function run(): Promise<void> {
     const text: string = core.getInput("text", { required: false });
     const keyphrase: string = core.getInput("keyphrase", { required: true });
     const caseSensitive: boolean = core.getBooleanInput("case-sensitive", { required: true });
-    const minimumOccurences: number = parseInt(core.getInput("minimum_occurences", { required: true })
+    const minimumOccurences: number = parseInt(
+      core.getInput("minimum-occurences", { required: true })
     );
 
     // Check that exactly one of text or textFile is provided

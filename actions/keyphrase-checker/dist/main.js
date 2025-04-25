@@ -46,7 +46,7 @@ async function run() {
         const text = core.getInput("text", { required: false });
         const keyphrase = core.getInput("keyphrase", { required: true });
         const caseSensitive = core.getBooleanInput("case-sensitive", { required: true });
-        const minimumOccurences = parseInt(core.getInput("minimum_occurences", { required: true }));
+        const minimumOccurences = parseInt(core.getInput("minimum-occurences", { required: true }));
         // Check that exactly one of text or textFile is provided
         if ((!textFile && !text) || (textFile && text)) {
             core.setFailed("Exactly one of 'text-file' or 'text' inputs must be provided");

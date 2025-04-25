@@ -127,6 +127,10 @@ jobs:
       - name: Check output for direct text test
         run: |
           if [[ "${{ steps.test-direct-text.outcome }}" != "failure" ]]; then
+            echo "Expected the test to fail but it passed"
+            exit 1
+          fi
+          if [[ "${{ steps.test-direct-text.outputs.occurences }}" != "0" ]]; then
             echo "Expected 0 occurrences but found ${{ steps.test-direct-text.outputs.occurences }}"
             exit 1
           fi
@@ -144,6 +148,10 @@ jobs:
       - name: Check output for text file test
         run: |
           if [[ "${{ steps.test-text-file.outcome }}" != "failure" ]]; then
+            echo "Expected the test to fail but it passed"
+            exit 1
+          fi
+          if [[ "${{ steps.test-text-file.outputs.occurences }}" != "1" ]]; then
             echo "Expected 1 occurrences but found ${{ steps.test-text-file.outputs.occurences }}"
             exit 1
           fi

@@ -28,7 +28,7 @@ jobs:
         with:
           repository: skills/exercise-toolkit
           path: exercise-toolkit
-          ref: 7aa247792cb4021203b7c05e65f9128d1c7d2312
+          ref: 2b20d4df4eeb6ddb2631cd16db6aab20e2b36779 # v0.4.0
 
       - name: Build congratulations message from template
         id: build-new-readme
@@ -61,7 +61,7 @@ jobs:
         with:
           repository: skills/exercise-toolkit
           path: exercise-toolkit
-          ref: 7aa247792cb4021203b7c05e65f9128d1c7d2312
+          ref: 2b20d4df4eeb6ddb2631cd16db6aab20e2b36779 # v0.4.0
 
       - name: Build message - exercise finished
         id: build-finish-message

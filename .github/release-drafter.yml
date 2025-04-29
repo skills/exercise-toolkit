@@ -18,12 +18,20 @@ categories:
     collapse-after: 10
   - title: ✍ Other changes
 
+change-template: '- $TITLE (#$NUMBER)'
+version-resolver:
+  major:
+    labels:
+      - 'bump-major'
+      - 'breaking'
+  minor:
+    labels:
+      - 'bump-minor'
+  default: patch
 template: |
-  # What's Changed
-
+  ## What's Changed
+  
   $CHANGES
 
-  **Full Changelog**: https://github.com/$OWNER/$REPOSITORY/compare/$PREVIOUS_TAG...v$RESOLVED_VERSION
-
 exclude-labels:
-  - "skip-changelog"
+  - 'skip-release-notes'

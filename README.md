@@ -4,6 +4,16 @@
   <img src="https://octodex.github.com/images/manufacturetocat.png" alt="Manufacturetocat" width="300" />
 </p>
 
+- [Skills Exercises Toolkit :hammer\_and\_wrench:](#skills-exercises-toolkit-hammer_and_wrench)
+  - [Purpose](#purpose)
+    - [Contents](#contents)
+  - [Examples](#examples)
+    - [⚙️ Reusable Workflows](#️-reusable-workflows)
+      - [Starting an exercise](#starting-an-exercise)
+      - [Finding an exercise](#finding-an-exercise)
+    - [📋 Markdown Templates](#-markdown-templates)
+  - [Notable Resources](#notable-resources)
+
 ## Purpose
 
 This repository serves as a comprehensive toolkit for creating and managing GitHub Skills exercises. It provides a collection of tools, templates, and utilities designed to streamline the process of developing educational content for GitHub Skills.
@@ -29,20 +39,16 @@ jobs:
     with:
       exercise-title: "Introduction to GitHub Copilot"
       intro-message: "Let's get you started with GitHub Copilot :robot: ! We will learn ..."
-
 ```
 
 #### Finding an exercise
 
 ```yaml
-
 jobs:
   find_exercise:
     name: Find Exercise Issue
     uses: skills/exercise-toolkit/.github/workflows/find-exercise-issue.yml@<git-tag>
-
 ```
-
 
 ### 📋 Markdown Templates
 
@@ -60,7 +66,6 @@ steps:
   - name: Use the template
     run: |
       cat exercise-toolkit/markdown-templates/step-feedback/checking-work.md
-
 ```
 
 Markdown templates are often used together with [skills/action-text-variables](https://github.com/skills/action-text-variables) GitHub Action
@@ -86,5 +91,12 @@ steps:
     run: echo "$UPDATED_TEXT"
     env:
       UPDATED_TEXT: ${{ steps.build-message-congratulations.outputs.updated-text }}
-
 ```
+
+## Notable Resources
+
+These GitHub Actions are particularly useful when creating GitHub Skills Exercises:
+
+- **[skills/action-text-variables](https://github.com/skills/action-text-variables)**: Replace variables in template files with dynamic content
+- **[skills/action-keyphrase-checker](https://github.com/skills/action-keyphrase-checker)**: Verify if specific keyphrases exist in files or content
+

@@ -5,7 +5,7 @@ on:
 
 permissions:
   contents: read
-  statuses: write   # To report GitHub Actions status checks
+  statuses: write   # To report GitHub Actions stat us checks
 
 jobs:
   lint:

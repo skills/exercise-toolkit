@@ -7,6 +7,11 @@ on:
         description: "The URL of the issue to update and close"
         required: true
         type: string
+      update-readme-with-congratulations:
+        description: "Whether to update the README with a congratulations message"
+        required: false
+        type: boolean
+        default: true
 
 permissions:
   contents: write
@@ -16,6 +21,7 @@ jobs:
   update_readme:
     name: Update README with congratulations
     runs-on: ubuntu-latest
+    if: inputs.update-readme-with-congratulations
 
     steps:
       - name: Checkout

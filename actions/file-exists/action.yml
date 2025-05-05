@@ -12,7 +12,7 @@ runs:
       with:
         script: |
           const fs = require('fs');
-          const filePath = process.env.GITHUB_WORKSPACE + '/' + '${{ inputs.file }}';
+          const filePath = path.join(process.env.GITHUB_WORKSPACE, '${{ inputs.file }}');
 
           if (!fs.existsSync(filePath)) {
             core.setFailed(`❌ File does not exist: ${filePath}`);

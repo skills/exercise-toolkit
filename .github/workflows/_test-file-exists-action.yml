@@ -2,6 +2,8 @@ name: Test File Exists Action
 
 on:
   push:
+    branches:
+      - main
     paths:
       - "actions/file-exists/**"
   pull_request:

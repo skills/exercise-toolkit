@@ -8,6 +8,9 @@ on:
     paths:
       - 'actions/file-exists/**'
 
+permissions:
+  contents: read
+
 jobs:
   test-file-exists:
     runs-on: ubuntu-latest

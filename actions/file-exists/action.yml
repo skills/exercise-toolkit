@@ -1,0 +1,22 @@
+name: "File Exists"
+description: "Checks if a file exists in the repository"
+inputs:
+  file:
+    description: "The path to the file to check"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Check if file exists
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          const filePath = process.env.GITHUB_WORKSPACE + '/' + '${{ inputs.file }}';
+
+          if (!fs.existsSync(filePath)) {
+            core.setFailed(`❌ File does not exist: ${filePath}`);
+            return;
+          }
+
+          console.log(`✅ File exists: ${filePath}`);

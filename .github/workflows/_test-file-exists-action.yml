@@ -3,18 +3,21 @@ name: Test File Exists Action
 on:
   push:
     paths:
-      - 'actions/file-exists/**'
+      - "actions/file-exists/**"
   pull_request:
     paths:
-      - 'actions/file-exists/**'
+      - "actions/file-exists/**"
 
 permissions:
   contents: read
 
 jobs:
   test-file-exists:
-    runs-on: ubuntu-latest
-    name: Test File Exists Action
+    runs-on: ${{ matrix.os }}
+    name: Test File Exists Action (${{ matrix.os }})
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -25,8 +28,11 @@ jobs:
           file: README.md
 
   test-failure-case:
-    runs-on: ubuntu-latest
-    name: Test File Not Exists
+    runs-on: ${{ matrix.os }}
+    name: Test File Not Exists (${{ matrix.os }})
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4

@@ -16,6 +16,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     name: Test File Exists Action (${{ matrix.os }})
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
@@ -31,6 +32,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     name: Test File Not Exists (${{ matrix.os }})
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:

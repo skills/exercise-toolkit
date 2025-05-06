@@ -9,6 +9,8 @@ categories:
     label: templates
   - title: ⚙️ Reusable Workflows
     label: workflows
+  - title: 🛠️ Actions
+    label: actions
   - title: 🔧 Maintenance
     label: maintenance
   - title: 📚 Documentation
@@ -18,20 +20,20 @@ categories:
     collapse-after: 10
   - title: ✍ Other changes
 
-change-template: '- $TITLE (#$NUMBER)'
+change-template: "- $TITLE (#$NUMBER)"
 version-resolver:
   major:
     labels:
-      - 'bump-major'
-      - 'breaking'
+      - "bump-major"
+      - "breaking"
   minor:
     labels:
-      - 'bump-minor'
+      - "bump-minor"
   default: patch
 template: |
   ## What's Changed
-  
+
   $CHANGES
 
 exclude-labels:
-  - 'skip-release-notes'
+  - "skip-release-notes"

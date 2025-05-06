@@ -1,0 +1,45 @@
+name: "Check all Results"
+description: "Receives the results of multiple grading workflows and returns a boolean. True if all pass. False if any fail."
+
+outputs:
+  result:
+    description: "Boolean indicating if all checks have passed"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Check all results
+      uses: actions/github-script@v7
+      with:
+        result-encoding: string
+        script: |
+          // Load all environment variables that start with "CHECK" into a dictionary
+          const checks = Object.keys(process.env)
+            .filter(key => key.toLowerCase().startsWith('check'))
+            .reduce((acc, key) => {
+            acc[key] = process.env[key];
+            return acc;
+            }, {});
+
+          // Show the loaded checks
+          console.log ("Combining checks", checks)
+
+          // Try parsing the checks object to json
+          let parsed = true
+          for (const key in checks) {
+            try {
+              checks[key] = JSON.parse(checks[key]);
+            } catch (error) {
+              console.log(`Error parsing ${key}: with value '${checks[key]}'`);
+              parsed = false
+            }
+          }
+          
+          // If unable to parse all checks, assume failure
+          if (!parsed) {
+            return false
+          }
+
+          // Check if all checks passed
+          const result = Object.values(checks).every(check => check.passed)
+          return result

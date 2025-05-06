@@ -12,6 +12,11 @@ workflows:
           - ".github/workflows/*.yml"
           - "!.github/workflows/_*.yml"
 
+# Actions label for changes to the actions directory
+actions:
+  - changed-files:
+      - any-glob-to-any-file: "actions/**/*"
+
 # Documentation label for root level .md files and files in /docs/ directory
 documentation:
   - changed-files:

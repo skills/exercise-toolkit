@@ -3,6 +3,7 @@ name: Finish Exercise Workflow
 on:
   workflow_call:
     inputs:
+      # TODO: Potentiolly remove this input and use the issue-url from the find-exercise-issue action
       issue-url:
         description: "The URL of the issue to update and close"
         required: true

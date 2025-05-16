@@ -7,6 +7,7 @@ on:
         description: 'Title of the exercise'
         required: true
         type: string
+      # TODO: Maybe remove this for simplification. Always prefix with "Exercise: "
       issue-title-prefix:
         description: 'Prefix for the exercise title in the issue'
         required: false

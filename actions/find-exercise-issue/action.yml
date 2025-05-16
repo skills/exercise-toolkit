@@ -1,0 +1,59 @@
+name: "Find Exercise Issue"
+description: "Searches for the exercise issue and returns its URL and number"
+author: "GitHub"
+
+inputs:
+  issue-title-text:
+    description: "Text to search for within issue titles"
+    required: false
+    default: "Exercise"
+  github-token:
+    description: "GitHub token with issues:read permission"
+    required: false
+    default: ${{ github.token }}
+
+outputs:
+  issue-url:
+    description: "URL of the found issue"
+    value: ${{ steps.find-exercise-issue.outputs.ISSUE_URL }}
+  issue-number:
+    description: "Number of the found issue"
+    value: ${{ steps.find-exercise-issue.outputs.ISSUE_NUMBER }}
+
+runs:
+  using: "composite"
+  steps:
+    - id: find-exercise-issue
+      uses: actions/github-script@v7
+      env:
+        ISSUE_TITLE_PREFIX: ${{ inputs.issue-title-text }}
+      with:
+        github-token: ${{ inputs.github-token }}
+        script: |
+          const response = await github.rest.issues.listForRepo({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            state: 'open',
+            sort: 'created',    // Sort by creation date
+            direction: 'desc',  // Newest first (descending order)
+            per_page: 50
+          });
+
+          // Get just the issues, not pull requests
+          const issues = response.data.filter(item => !item.pull_request);
+
+          // Start a collapsible group in the logs
+          core.startGroup(`Found ${issues.length} open issues in total`);
+          issues.forEach(issue => {
+            core.info(`#${issue.number}: ${issue.html_url}`);
+          });
+          core.endGroup();
+
+          const issue = issues.find(issue => issue.title.includes(process.env.ISSUE_TITLE_PREFIX));
+          if (!issue) {
+            throw new Error('No exercise issue found');
+          }
+          core.info(`Exercise issue found: #${issue.number} (${issue.html_url})`);
+
+          core.setOutput('ISSUE_URL', issue.html_url);
+          core.setOutput('ISSUE_NUMBER', issue.number);

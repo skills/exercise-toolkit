@@ -1,0 +1,60 @@
+name: Update Self-References
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      # Currently reusable workflows only use markdown-templates but this may be extended to actions and other files in the future
+      - "markdown-templates/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update_versions:
+    name: Update Exercise Toolkit Version References
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get target version
+        id: version
+        run: |
+          VERSION="${{ github.sha }}"
+          echo "target-version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Update EXERCISE_TOOLKIT_REF in workflow files
+        uses: jacobtomlinson/gha-find-replace@v3
+        with:
+          find: 'EXERCISE_TOOLKIT_REF: [^\s]+'
+          replace: "EXERCISE_TOOLKIT_REF: ${{ steps.version.outputs.target-version }}"
+          include: ".github/workflows/*.yml"
+          regex: true
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "chore: update exercise-toolkit self-references to ${{ steps.version.outputs.target-version }}"
+          title: "chore: update exercise-toolkit self-references to ${{ steps.version.outputs.target-version }}"
+          body: |
+            ## 🔄 Automated Version Update
+
+            This PR automatically updates the `EXERCISE_TOOLKIT_REF` environment variable in reusable workflows to reference the latest version: **${{ steps.version.outputs.target-version }}**
+
+            ---
+            *This PR was automatically created by the `update-self-references` workflow.*
+          branch: update-self-refs
+          delete-branch: true
+          draft: false
+          reviewers: |
+            FidelusAleksander
+          labels: |
+            skip-release-notes
+            maintenance

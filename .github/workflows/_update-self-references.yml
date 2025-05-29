@@ -24,29 +24,23 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Get target version
-        id: version
-        run: |
-          VERSION="${{ github.sha }}"
-          echo "target-version=$VERSION" >> $GITHUB_OUTPUT
-
       - name: Update EXERCISE_TOOLKIT_REF in workflow files
         uses: jacobtomlinson/gha-find-replace@v3
         with:
           find: 'EXERCISE_TOOLKIT_REF: [^\s]+'
-          replace: "EXERCISE_TOOLKIT_REF: ${{ steps.version.outputs.target-version }}"
+          replace: "EXERCISE_TOOLKIT_REF: ${{ github.sha }}"
           include: ".github/workflows/*.yml"
           regex: true
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
-          commit-message: "chore: update exercise-toolkit self-references to ${{ steps.version.outputs.target-version }}"
-          title: "chore: update exercise-toolkit self-references to ${{ steps.version.outputs.target-version }}"
+          commit-message: "chore: update exercise-toolkit self-references to latest commit"
+          title: "chore: update exercise-toolkit self-references to latest commit"
           body: |
             ## 🔄 Automated Version Update
 
-            This PR automatically updates the `EXERCISE_TOOLKIT_REF` environment variable in reusable workflows to reference the latest version: **${{ steps.version.outputs.target-version }}**
+            This PR automatically updates the `EXERCISE_TOOLKIT_REF` environment variable in reusable workflows to reference the latest commit
 
             ---
             *This PR was automatically created by the `update-self-references` workflow.*

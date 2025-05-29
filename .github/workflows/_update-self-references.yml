@@ -30,6 +30,7 @@ jobs:
           find: 'EXERCISE_TOOLKIT_REF: [^\s]+'
           replace: "EXERCISE_TOOLKIT_REF: ${{ github.sha }}"
           include: ".github/workflows/*.yml"
+          exclude: ".github/workflows/_*.yml"
           regex: true
 
       - name: Create Pull Request
@@ -46,9 +47,11 @@ jobs:
             *This PR was automatically created by the `update-self-references` workflow.*
           branch: update-self-refs
           delete-branch: true
+          add-paths: |
+            .github/workflows/*.yml
           draft: false
-          reviewers: |
-            FidelusAleksander
+          # reviewers: |
+          #   FidelusAleksander
           labels: |
             skip-release-notes
             maintenance

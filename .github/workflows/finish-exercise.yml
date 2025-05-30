@@ -18,7 +18,7 @@ permissions:
   issues: write
 
 env:
-  EXERCISE_TOOLKIT_REF: v0.5.0
+  EXERCISE_TOOLKIT_REF: bf08a5d58f3da0a46beab1eba3920876b1bab19d
 
 jobs:
   update_readme:

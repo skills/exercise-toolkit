@@ -17,6 +17,9 @@ permissions:
   contents: write
   issues: write
 
+env:
+  EXERCISE_TOOLKIT_REF: v0.5.0
+
 jobs:
   update_readme:
     name: Update README with congratulations
@@ -34,7 +37,7 @@ jobs:
         with:
           repository: skills/exercise-toolkit
           path: exercise-toolkit
-          ref: v0.5.0
+          ref: ${{ env.EXERCISE_TOOLKIT_REF }}
 
       - name: Build congratulations message from template
         id: build-new-readme
@@ -67,7 +70,7 @@ jobs:
         with:
           repository: skills/exercise-toolkit
           path: exercise-toolkit
-          ref: v0.5.0
+          ref: ${{ env.EXERCISE_TOOLKIT_REF }}
 
       - name: Build message - exercise finished
         id: build-finish-message

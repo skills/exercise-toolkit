@@ -1,3 +1,8 @@
+# This workflow uses a Personal Access Token instead of built-in GITHUB_TOKEN to create the pull request
+# This is necessary because it commits changes to workflow files, which is not allowed with the default GITHUB_TOKEN.
+# See example https://github.com/peter-evans/create-pull-request/issues/3558
+# The PAT needs to have `contents: write` `pull-requests: write` and `workflows: write` permissions.
+
 name: Update Self-References
 
 on:
@@ -36,6 +41,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
         with:
+          token: ${{ secrets.EXERCISE_TOOLKIT_TOKEN }}
           commit-message: "chore: update exercise-toolkit self-references to latest commit"
           title: "chore: update exercise-toolkit self-references to latest commit"
           body: |
@@ -50,8 +56,5 @@ jobs:
           add-paths: |
             .github/workflows/*.yml
           draft: false
-          reviewers: |
-            FidelusAleksander
           labels: |
             skip-release-notes
-            maintenance

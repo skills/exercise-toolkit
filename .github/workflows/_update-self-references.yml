@@ -55,8 +55,6 @@ jobs:
           add-paths: |
             .github/workflows/*.yml
           draft: false
-          reviewers: |
-            FidelusAleksander
           labels: |
             skip-release-notes
             maintenance

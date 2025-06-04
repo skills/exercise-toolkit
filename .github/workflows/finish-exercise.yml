@@ -47,6 +47,7 @@ jobs:
           template-vars: |
             login: ${{ github.actor }}
             issue_url: ${{ inputs.issue-url }}
+            social_url: https://github.com/${{ github.repository }}
 
       - name: Overwrite README
         env:

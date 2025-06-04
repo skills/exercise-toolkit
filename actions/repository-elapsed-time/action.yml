@@ -1,0 +1,61 @@
+name: "Repository Elapsed Time"
+description: "Checks the time since the repository was created and returns it in multiple formats"
+outputs:
+  days:
+    description: "Number of days since repository creation"
+    value: ${{ steps.calculate-time.outputs.days }}
+  hours:
+    description: "Number of hours since repository creation"
+    value: ${{ steps.calculate-time.outputs.hours }}
+  minutes:
+    description: "Number of minutes since repository creation"
+    value: ${{ steps.calculate-time.outputs.minutes }}
+  human-readable:
+    description: "Human readable time since repository creation"
+    value: ${{ steps.calculate-time.outputs.human-readable }}
+  created-at:
+    description: "Repository creation timestamp"
+    value: ${{ steps.calculate-time.outputs.created-at }}
+runs:
+  using: "composite"
+  steps:
+    - name: Calculate repository elapsed time
+      id: calculate-time
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const { data: repo } = await github.rest.repos.get({
+            owner: context.repo.owner,
+            repo: context.repo.repo
+          });
+
+          const createdAt = new Date(repo.created_at);
+          const now = new Date();
+          const diffMs = now - createdAt;
+
+          // Calculate different time units
+          const minutes = Math.floor(diffMs / (1000 * 60));
+          const hours = Math.floor(diffMs / (1000 * 60 * 60));
+          const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+          // Create human readable format
+          let humanReadable;
+          if (days > 0) {
+            const remainingHours = hours % 24;
+            humanReadable = `${days} day${days > 1 ? 's' : ''} and ${remainingHours} hour${remainingHours !== 1 ? 's' : ''}`;
+          } else if (hours > 0) {
+            const remainingMinutes = minutes % 60;
+            humanReadable = `${hours} hour${hours > 1 ? 's' : ''} and ${remainingMinutes} minute${remainingMinutes !== 1 ? 's' : ''}`;
+          } else {
+            humanReadable = `${minutes} minutes`;
+          }
+
+          // Set outputs
+          core.setOutput('days', days.toString());
+          core.setOutput('hours', hours.toString());
+          core.setOutput('minutes', minutes.toString());
+          core.setOutput('human-readable', humanReadable);
+          core.setOutput('created-at', repo.created_at);
+
+          console.log(`✅ Repository created: ${repo.created_at}`);
+          console.log(`✅ Elapsed time: ${humanReadable} (${days} days, ${hours} hours, ${minutes} minutes)`);

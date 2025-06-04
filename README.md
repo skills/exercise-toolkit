@@ -24,6 +24,7 @@ This repository serves as a comprehensive toolkit for creating and managing GitH
 - **[markdown-templates](/markdown-templates)**: Ready-to-use Markdown templates for creating consistent exercise documentation, instructions, and README files
 - **[actions](/actions)**: Simple composite actions to help when building GitHub Skills exercises
 
+
 ## Examples
 
 ### ⚙️ Reusable Workflows

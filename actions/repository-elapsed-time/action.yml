@@ -1,21 +1,12 @@
 name: "Repository Elapsed Time"
 description: "Checks the time since the repository was created and returns it in multiple formats"
 outputs:
-  days:
-    description: "Number of days since repository creation"
-    value: ${{ steps.calculate-time.outputs.days }}
-  hours:
-    description: "Number of hours since repository creation"
-    value: ${{ steps.calculate-time.outputs.hours }}
   minutes:
     description: "Number of minutes since repository creation"
     value: ${{ steps.calculate-time.outputs.minutes }}
   human-readable:
     description: "Human readable time since repository creation"
     value: ${{ steps.calculate-time.outputs.human-readable }}
-  created-at:
-    description: "Repository creation timestamp"
-    value: ${{ steps.calculate-time.outputs.created-at }}
 runs:
   using: "composite"
   steps:
@@ -51,11 +42,8 @@ runs:
           }
 
           // Set outputs
-          core.setOutput('days', days.toString());
-          core.setOutput('hours', hours.toString());
           core.setOutput('minutes', minutes.toString());
           core.setOutput('human-readable', humanReadable);
-          core.setOutput('created-at', repo.created_at);
 
           console.log(`✅ Repository created: ${repo.created_at}`);
-          console.log(`✅ Elapsed time: ${humanReadable} (${days} days, ${hours} hours, ${minutes} minutes)`);
+          console.log(`✅ Elapsed time: ${humanReadable} (${minutes} minutes)`);

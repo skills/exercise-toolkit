@@ -21,4 +21,9 @@ steps:
     run: |
       echo "Repository is ${{ steps.repo-age.outputs.human-readable }} old"
       echo "Minutes: ${{ steps.repo-age.outputs.minutes }}"
+
+  - name: Run step if repository is older than 1 hour
+    if: steps.repo-age.outputs.minutes > 60
+    run: |
+      echo "This repository has been around for more than an hour!"
 ```

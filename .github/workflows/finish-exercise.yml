@@ -39,6 +39,21 @@ jobs:
           path: exercise-toolkit
           ref: ${{ env.EXERCISE_TOOLKIT_REF }}
 
+      - name: Encode socials text
+        id: encode-socials-text
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const socialsText = `I just completed a #GitHubSkills exercise! 🎉
+
+            https://github.com/${{ github.repository }}
+
+            #GitHubSkills #OpenSource #GitHub
+            `;
+
+            const encodedText = encodeURIComponent(socialsText);
+            core.setOutput('encoded-text', encodedText);
+
       - name: Build congratulations message from template
         id: build-new-readme
         uses: skills/action-text-variables@v2
@@ -47,7 +62,7 @@ jobs:
           template-vars: |
             login: ${{ github.actor }}
             issue_url: ${{ inputs.issue-url }}
-            social_url: https://github.com/${{ github.repository }}
+            encoded_socials_text: ${{ steps.encode-socials-text.outputs.encoded-text }}
 
       - name: Overwrite README
         env:

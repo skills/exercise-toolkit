@@ -15,7 +15,7 @@ If you would like to retrace your steps, you can always revisit the exercise.
 
 Show off your new skills and inspire others in the developer community!
 
-<a href="https://twitter.com/intent/tweet?text=I%20just%20completed%20a%20%23GitHubSkills%20exercise%20on%20%40github!%20Check%20it%20out%3A%20{{{ social_url }}}" target="_blank" rel="noopener noreferrer">
+<a href="https://twitter.com/intent/tweet?text={{ encoded_socials_text }}" target="_blank" rel="noopener noreferrer">
   <img src="https://img.shields.io/badge/Share%20on%20X-1da1f2?style=for-the-badge&logo=x&logoColor=white" alt="Share on X" />
 </a>
 

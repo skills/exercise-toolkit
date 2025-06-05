@@ -11,6 +11,15 @@ If you would like to retrace your steps, you can always revisit the exercise.
 > [!TIP]
 > Mona won't grade you this time! 😉
 
+### 🚀 Share Your Success!
+
+Show off your new skills and inspire others in the developer community!
+
+<a href="https://twitter.com/intent/tweet?text={{ encoded_socials_text }}" target="_blank" rel="noopener noreferrer">
+  <img src="https://img.shields.io/badge/Share%20on%20X-1da1f2?style=for-the-badge&logo=x&logoColor=white" alt="Share on X" />
+</a>
+
+---
 
 ### Craving more? :raising_hand:
 

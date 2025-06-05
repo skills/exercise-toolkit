@@ -18,7 +18,7 @@ permissions:
   issues: write
 
 env:
-  EXERCISE_TOOLKIT_REF: dd3788a80f626a1f79fa1b1c3b47b7686f7e1bc2
+  EXERCISE_TOOLKIT_REF: a3125d8f055a01f6827a5caf9ca592711e706750
 
 jobs:
   update_readme:
@@ -39,6 +39,22 @@ jobs:
           path: exercise-toolkit
           ref: ${{ env.EXERCISE_TOOLKIT_REF }}
 
+      - name: Encode socials text
+        id: encode-socials-text
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const repoUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}`;
+            const socialsText = `I just completed a GitHub Skills exercise! 🎉
+
+            ${repoUrl}
+
+            #GitHubSkills #OpenSource #GitHubLearn
+            `;
+
+            const encodedText = encodeURIComponent(socialsText);
+            core.setOutput('encoded-text', encodedText);
+
       - name: Build congratulations message from template
         id: build-new-readme
         uses: skills/action-text-variables@v2
@@ -47,6 +63,7 @@ jobs:
           template-vars: |
             login: ${{ github.actor }}
             issue_url: ${{ inputs.issue-url }}
+            encoded_socials_text: ${{ steps.encode-socials-text.outputs.encoded-text }}
 
       - name: Overwrite README
         env:

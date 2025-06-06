@@ -14,6 +14,9 @@
 <a href="https://twitter.com/intent/tweet?text={{ encoded_socials_text }}" target="_blank" rel="noopener noreferrer">
   <img src="https://img.shields.io/badge/Share%20on%20X-1da1f2?style=for-the-badge&logo=x&logoColor=white" alt="Share on X" />
 </a>
+<a href="https://bsky.app/intent/compose?text={{ encoded_socials_text }}" target="_blank" rel="noopener noreferrer">
+  <img src="https://img.shields.io/badge/Share%20on%20Bluesky-0085ff?style=for-the-badge&logo=bluesky&logoColor=white" alt="Share on Bluesky" />
+</a>
 
 ### 🎯 What's Next?
 **Keep the momentum going!**

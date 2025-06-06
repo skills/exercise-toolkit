@@ -25,7 +25,6 @@ version-resolver:
   major:
     labels:
       - "bump-major"
-      - "breaking"
   minor:
     labels:
       - "bump-minor"

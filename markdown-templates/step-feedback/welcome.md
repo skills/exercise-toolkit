@@ -6,12 +6,16 @@
 
 {{ intro_message }}
 
-As you complete each step, I will respond in the comments to:
+---
 
-- check your work and give feedback
-- share next steps
-- occasionally share tips
-- congratulate you when you finish!
+✨ **This is an interactive, hands-on GitHub Skills exercise!**
 
-Good luck and have fun!
-\- Mona
+As you complete each step, I’ll leave updates in the comments:
+
+- ✅ Check your work and guide you forward
+- 💡 Share helpful tips and resources
+- 🚀 Celebrate your progress and completion
+
+Let’s get started - good luck and have fun!
+
+<sub>— Mona</sub>

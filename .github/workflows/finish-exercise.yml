@@ -7,6 +7,10 @@ on:
         description: "The URL of the issue to update and close"
         required: true
         type: string
+      exercise-title:
+        description: "The title of the exercise"
+        required: false
+        type: string
       update-readme-with-congratulations:
         description: "Whether to update the README with a congratulations message"
         required: false
@@ -42,10 +46,18 @@ jobs:
       - name: Encode socials text
         id: encode-socials-text
         uses: actions/github-script@v7
+        env:
+          EXERCISE_TITLE: ${{ inputs.exercise-title }}
         with:
           script: |
             const repoUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}`;
-            const socialsText = `I just completed a GitHub Skills exercise! 🎉
+            const exerciseTitle = process.env.EXERCISE_TITLE;
+
+            const firstLine = exerciseTitle && exerciseTitle.trim() !== ''
+              ? `I just completed the "${exerciseTitle}" GitHub Skills hands-on exercise! 🎉`
+              : `I just completed a GitHub Skills hands-on exercise! 🎉`;
+
+            const socialsText = `${firstLine}
 
             ${repoUrl}
 
@@ -97,7 +109,6 @@ jobs:
           template-vars: |
             login: ${{ github.actor }}
             repo_full_name: ${{ github.repository }}
-
       - name: Create comment - exercise finished
         run: |
           gh issue comment "${{ inputs.issue-url }}" \

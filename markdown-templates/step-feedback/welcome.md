@@ -10,7 +10,7 @@
 
 ✨ **This is an interactive, hands-on GitHub Skills exercise!**
 
-As you complete each step, I’ll:
+As you complete each step, I’ll leave updates in the comments:
 
 - ✅ Check your work and guide you forward
 - 💡 Share helpful tips and resources

@@ -55,8 +55,9 @@ jobs:
       - name: Create comment - add step content
         run: |
           gh issue comment "${{ inputs.issue-url }}" \
-            --body "${{ steps.build-content.outputs.updated-text }}"
+            --body "$STEP_CONTENT"
         env:
+          STEP_CONTENT: ${{ steps.build-content.outputs.updated-text }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create comment - watching for progress

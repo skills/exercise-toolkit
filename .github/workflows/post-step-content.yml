@@ -1,0 +1,96 @@
+name: Post Step Content
+
+on:
+  workflow_call:
+    inputs:
+      issue-url:
+        description: "URL of the issue to post content to"
+        required: true
+        type: string
+      step-content-file:
+        description: 'Path to the markdown file containing step content (e.g., ".github/steps/2-step.md")'
+        required: true
+        type: string
+      template-vars:
+        description: "Template variables in YAML or JSON format"
+        required: false
+        type: string
+        default: ""
+      enable-workflows:
+        description: 'Names of workflows to enable. Single workflow: "Step 3" or multiple workflows as multi-line string'
+        required: false
+        type: string
+
+permissions:
+  actions: write # Enable/disable workflows
+  issues: write # Post comments
+  contents: read
+
+env:
+  EXERCISE_TOOLKIT_REF: main
+
+jobs:
+  post_step_content:
+    name: Post step content
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get response templates
+        uses: actions/checkout@v4
+        with:
+          repository: skills/exercise-toolkit
+          path: exercise-toolkit
+          ref: ${{ env.EXERCISE_TOOLKIT_REF }}
+
+      - name: Build content from template
+        id: build-content
+        if: inputs.template-vars != ''
+        uses: skills/action-text-variables@v2
+        with:
+          template-file: ${{ inputs.step-content-file }}
+          template-vars: ${{ inputs.template-vars }}
+
+      - name: Create comment - add step content
+        run: |
+          if [ "${{ inputs.template-vars }}" != "" ]; then
+            gh issue comment "${{ inputs.issue-url }}" \
+              --body "${{ steps.build-content.outputs.updated-text }}"
+          else
+            gh issue comment "${{ inputs.issue-url }}" \
+              --body-file "${{ inputs.step-content-file }}"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create comment - watching for progress
+        run: |
+          gh issue comment "${{ inputs.issue-url }}" \
+            --body-file exercise-toolkit/markdown-templates/step-feedback/watching-for-progress.md
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Workflow management
+      - name: Disable current workflow
+        run: |
+          gh workflow disable "${{ github.workflow }}" || true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Enable workflows
+        if: inputs.enable-workflows != ''
+        run: |
+          # Handle both single workflow and multi-line format
+          echo '${{ inputs.enable-workflows }}' | while IFS= read -r workflow; do
+            # Skip empty lines
+            if [ -n "$workflow" ]; then
+              # Trim whitespace
+              workflow=$(echo "$workflow" | xargs)
+              echo "Enabling workflow: $workflow"
+              gh workflow enable "$workflow"
+            fi
+          done
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

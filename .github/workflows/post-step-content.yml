@@ -47,7 +47,6 @@ jobs:
 
       - name: Build content from template
         id: build-content
-        if: inputs.template-vars != ''
         uses: skills/action-text-variables@v2
         with:
           template-file: ${{ inputs.step-content-file }}
@@ -55,13 +54,8 @@ jobs:
 
       - name: Create comment - add step content
         run: |
-          if [ "${{ inputs.template-vars }}" != "" ]; then
-            gh issue comment "${{ inputs.issue-url }}" \
-              --body "${{ steps.build-content.outputs.updated-text }}"
-          else
-            gh issue comment "${{ inputs.issue-url }}" \
-              --body-file "${{ inputs.step-content-file }}"
-          fi
+          gh issue comment "${{ inputs.issue-url }}" \
+            --body "${{ steps.build-content.outputs.updated-text }}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

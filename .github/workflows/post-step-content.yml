@@ -67,25 +67,25 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Workflow management
-      - name: Disable current workflow
-        run: |
-          gh workflow disable "${{ github.workflow }}" || true
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # # Workflow management
+      # - name: Disable current workflow
+      #   run: |
+      #     gh workflow disable "${{ github.workflow }}" || true
+      #   env:
+      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Enable workflows
-        if: inputs.enable-workflows != ''
-        run: |
-          # Handle both single workflow and multi-line format
-          echo '${{ inputs.enable-workflows }}' | while IFS= read -r workflow; do
-            # Skip empty lines
-            if [ -n "$workflow" ]; then
-              # Trim whitespace
-              workflow=$(echo "$workflow" | xargs)
-              echo "Enabling workflow: $workflow"
-              gh workflow enable "$workflow"
-            fi
-          done
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Enable workflows
+      #   if: inputs.enable-workflows != ''
+      #   run: |
+      #     # Handle both single workflow and multi-line format
+      #     echo '${{ inputs.enable-workflows }}' | while IFS= read -r workflow; do
+      #       # Skip empty lines
+      #       if [ -n "$workflow" ]; then
+      #         # Trim whitespace
+      #         workflow=$(echo "$workflow" | xargs)
+      #         echo "Enabling workflow: $workflow"
+      #         gh workflow enable "$workflow"
+      #       fi
+      #     done
+      #   env:
+      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -13,6 +13,7 @@
 {%- if all_passed %}
 <img src="https://octodex.github.com/images/inflatocat.png" align="right" height="150px" alt="Inflatocat image indicating the step passed" />
 {%- else %}
+
 <img src="https://octodex.github.com/images/spidertocat.png" align="right" height="100px" alt="Spidertocat image indicating the step failed" />
 Some checks failed. Please review the results below and try again.
 

@@ -1,4 +1,6 @@
-{%- if passed %}
+{%- set all_passed = (results_table | selectattr("passed") | length) == (results_table | length) %}
+
+{%- if all_passed %}
 
 ## Step {{ step_number }} - Passed ✅
 
@@ -8,7 +10,7 @@
 
 {%- endif %}
 
-{%- if passed %}
+{%- if all_passed %}
 <img src="https://octodex.github.com/images/inflatocat.png" align="right" height="150px" alt="Inflatocat image indicating the step passed" />
 {%- else %}
 <img src="https://octodex.github.com/images/spidertocat.png" align="right" height="100px" alt="Spidertocat image indicating the step failed" />

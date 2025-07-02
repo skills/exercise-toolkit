@@ -69,7 +69,7 @@ jobs:
 
       - name: Build congratulations message from template
         id: build-new-readme
-        uses: skills/action-text-variables@v2
+        uses: skills/action-text-variables@v3
         with:
           template-file: exercise-toolkit/markdown-templates/readme/exercise-finished.md
           template-vars: |
@@ -103,7 +103,7 @@ jobs:
 
       - name: Build message - exercise finished
         id: build-finish-message
-        uses: skills/action-text-variables@v2
+        uses: skills/action-text-variables@v3
         with:
           template-file: exercise-toolkit/markdown-templates/step-feedback/exercise-finished.md
           template-vars: |

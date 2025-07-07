@@ -22,6 +22,9 @@ I just completed a GitHub Skills hands-on exercise! 🎉
 
 **Show off your new skills and inspire others!**
 
+<a href="https://www.linkedin.com/feed/?shareActive=true&text={{ socials_text | urlencode }}" target="_blank" rel="noopener noreferrer">
+  <img src="https://img.shields.io/badge/Share%20on%20LinkedIn-0077b5?style=for-the-badge&logo=linkedin&logoColor=white" alt="Share on LinkedIn" />
+</a>
 <a href="https://twitter.com/intent/tweet?text={{ socials_text | urlencode }}" target="_blank" rel="noopener noreferrer">
   <img src="https://img.shields.io/badge/Share%20on%20X-1da1f2?style=for-the-badge&logo=x&logoColor=white" alt="Share on X" />
 </a>
@@ -30,9 +33,6 @@ I just completed a GitHub Skills hands-on exercise! 🎉
 </a>
 <a href="https://mastodon.social/share?text={{ socials_text | urlencode }}" target="_blank" rel="noopener noreferrer">
   <img src="https://img.shields.io/badge/Share%20on%20Mastodon-6364ff?style=for-the-badge&logo=mastodon&logoColor=white" alt="Share on Mastodon" />
-</a>
-<a href="https://www.linkedin.com/feed/?shareActive=true&text={{ socials_text | urlencode }}" target="_blank" rel="noopener noreferrer">
-  <img src="https://img.shields.io/badge/Share%20on%20LinkedIn-0077b5?style=for-the-badge&logo=linkedin&logoColor=white" alt="Share on LinkedIn" />
 </a>
 
 ### 🎯 What's Next?

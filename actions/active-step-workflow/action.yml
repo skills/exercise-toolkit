@@ -35,6 +35,12 @@ runs:
             repo: context.repo.repo
           });
 
+          // Log all workflows found
+          console.log(`Found ${workflows.workflows.length} total workflows:`);
+          workflows.workflows.forEach(workflow => {
+            console.log(`  - ${workflow.name} (state: ${workflow.state})`);
+          });
+
           // Find enabled step workflows
           const enabledSteps = workflows.workflows
             .filter(workflow => workflow.state === 'active' && pattern.test(workflow.name))

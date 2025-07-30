@@ -8,7 +8,7 @@ inputs:
   workflow-pattern:
     description: Regex pattern for step workflows
     required: false
-    default: '^\\d+[a-z]?-.*\\.yml$'
+    default: '^Step \\d+$'
 
 outputs:
   current-step:
@@ -41,11 +41,18 @@ runs:
             console.log(`  - ${workflow.name} (state: ${workflow.state})`);
           });
 
+          // Log the first workflow with all fields for debugging
+          if (workflows.workflows.length > 0) {
+            console.log('First workflow object with all fields:');
+            console.log(JSON.stringify(workflows.workflows[0], null, 2));
+          }
+
           // Find enabled step workflows
           const enabledSteps = workflows.workflows
             .filter(workflow => workflow.state === 'active' && pattern.test(workflow.name))
             .map(workflow => {
-              const match = workflow.name.match(/^(\d+)[a-z]?-.*\.yml$/);
+              // Match "Step X" format
+              const match = workflow.name.match(/^Step (\d+)$/);
               return {
                 name: workflow.name,
                 stepNumber: match ? match[1] : null

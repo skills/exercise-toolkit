@@ -4,7 +4,8 @@ description: Determines the current step of a GitHub Skills exercise by analyzin
 inputs:
   github-token:
     description: GitHub token for API access
-    required: true
+    default: ${{ github.token }}
+    required: false
   workflow-pattern:
     description: Regex pattern for step workflows
     required: false

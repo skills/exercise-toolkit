@@ -9,7 +9,9 @@ A collection of templates for use in Skills exercises.
 
 ## Template Variables
 
-Several templates contain [mustache style variables](https://mustache.github.io/mustache.5.html). They are intended for use with the [skills/action-text-variables](https://github.com/skills/action-text-variables) GitHub Action, which supports full mustache templating.
+Several templates contain [Nunjucks](https://mozilla.github.io/nunjucks/) style variable templating. They are intended for use with the [skills/action-text-variables](https://github.com/skills/action-text-variables) or [GrantBirki/comment](https://github.com/GrantBirki/comment) GitHub Actions, both of which support full Nunjucks templating.
+
+
 
 ### Example
 
@@ -27,5 +29,10 @@ Hello {{ login }}, nice to meet you!
 }
 ```
 
+#### yaml input
+```yaml
+login: "${{ github.actor }}"
+```
+
 > [!TIP]
-> See [mustache syntax](https://mustache.github.io/mustache.5.html) for all capabilities like iteration and if/then logic.
+> See [Nunjucks templating documentation](https://mozilla.github.io/nunjucks/templating.html) for all capabilities like iteration, conditionals, and more.

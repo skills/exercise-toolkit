@@ -1,0 +1,60 @@
+name: "Post Step Content"
+description: "Posts step content to GitHub issue and manages workflow transitions"
+inputs:
+  issue-url:
+    description: "URL of the issue to post content to"
+    required: true
+  step-content-file:
+    description: 'Path to the markdown file containing step content (e.g., ".github/steps/2-step.md")'
+    required: true
+  template-vars:
+    description: "Template variables in YAML or JSON format"
+    required: false
+    default: ""
+
+runs:
+  using: "composite"
+  steps:
+    - name: Get response templates
+      uses: actions/checkout@v4
+      with:
+        repository: skills/exercise-toolkit
+        path: exercise-toolkit
+        ref: main
+
+    - name: Build content from template
+      id: build-content
+      if: inputs.template-vars != ''
+      uses: skills/action-text-variables@v2
+      with:
+        template-file: ${{ inputs.step-content-file }}
+        template-vars: ${{ inputs.template-vars }}
+
+    - name: Create comment - step finished
+      shell: bash
+      run: |
+        gh issue comment "${{ inputs.issue-url }}" \
+          --body-file exercise-toolkit/markdown-templates/step-feedback/step-finished-prepare-next-step.md
+      env:
+        GH_TOKEN: ${{ github.token }}
+
+    - name: Create comment - add step content
+      shell: bash
+      run: |
+        if [ "${{ inputs.template-vars }}" != "" ]; then
+          gh issue comment "${{ inputs.issue-url }}" \
+            --body "${{ steps.build-content.outputs.updated-text }}"
+        else
+          gh issue comment "${{ inputs.issue-url }}" \
+            --body-file "${{ inputs.step-content-file }}"
+        fi
+      env:
+        GH_TOKEN: ${{ github.token }}
+
+    - name: Create comment - watching for progress
+      shell: bash
+      run: |
+        gh issue comment "${{ inputs.issue-url }}" \
+          --body-file exercise-toolkit/markdown-templates/step-feedback/watching-for-progress.md
+      env:
+        GH_TOKEN: ${{ github.token }}

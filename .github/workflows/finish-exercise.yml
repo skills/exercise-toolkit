@@ -22,7 +22,7 @@ permissions:
   issues: write
 
 env:
-  EXERCISE_TOOLKIT_REF: 85962a50afd57183f6703c3d07260bf3a123b3e9
+  EXERCISE_TOOLKIT_REF: 82efbc3de835a2b67d315833bb2f876ae9b4e07a
 
 jobs:
   update_readme:
@@ -43,39 +43,16 @@ jobs:
           path: exercise-toolkit
           ref: ${{ env.EXERCISE_TOOLKIT_REF }}
 
-      - name: Encode socials text
-        id: encode-socials-text
-        uses: actions/github-script@v7
-        env:
-          EXERCISE_TITLE: ${{ inputs.exercise-title }}
-        with:
-          script: |
-            const repoUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}`;
-            const exerciseTitle = process.env.EXERCISE_TITLE;
-
-            const firstLine = exerciseTitle && exerciseTitle.trim() !== ''
-              ? `I just completed the "${exerciseTitle}" GitHub Skills hands-on exercise! 🎉`
-              : `I just completed a GitHub Skills hands-on exercise! 🎉`;
-
-            const socialsText = `${firstLine}
-
-            ${repoUrl}
-
-            #GitHubSkills #OpenSource #GitHubLearn
-            `;
-
-            const encodedText = encodeURIComponent(socialsText);
-            core.setOutput('encoded-text', encodedText);
-
       - name: Build congratulations message from template
         id: build-new-readme
-        uses: skills/action-text-variables@v2
+        uses: skills/action-text-variables@v3
         with:
           template-file: exercise-toolkit/markdown-templates/readme/exercise-finished.md
           template-vars: |
             login: ${{ github.actor }}
             issue_url: ${{ inputs.issue-url }}
-            encoded_socials_text: ${{ steps.encode-socials-text.outputs.encoded-text }}
+            exercise_title: ${{ inputs.exercise-title }}
+            repository_url: https://github.com/${{ github.repository }}
 
       - name: Overwrite README
         env:
@@ -103,7 +80,7 @@ jobs:
 
       - name: Build message - exercise finished
         id: build-finish-message
-        uses: skills/action-text-variables@v2
+        uses: skills/action-text-variables@v3
         with:
           template-file: exercise-toolkit/markdown-templates/step-feedback/exercise-finished.md
           template-vars: |

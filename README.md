@@ -12,6 +12,8 @@
       - [Starting an exercise](#starting-an-exercise)
       - [Finding an exercise](#finding-an-exercise)
     - [📋 Markdown Templates](#-markdown-templates)
+      - [Using with GrantBirki/comment for issue comments](#using-with-grantbirkicomment-for-issue-comments)
+      - [Using with action-text-variables for file updates](#using-with-action-text-variables-for-file-updates)
   - [Notable Resources](#notable-resources)
 
 ## Purpose
@@ -70,7 +72,9 @@ steps:
       cat exercise-toolkit/markdown-templates/step-feedback/checking-work.md
 ```
 
-Markdown templates are often used together with [skills/action-text-variables](https://github.com/skills/action-text-variables) GitHub Action
+#### Using with GrantBirki/comment for issue comments
+
+Templates are often used with [GrantBirki/comment](https://github.com/GrantBirki/comment) to create dynamic comments on issues or pull requests:
 
 ```yaml
 steps:
@@ -81,18 +85,43 @@ steps:
       path: exercise-toolkit
       ref: <git-tag>
 
-  - name: Build message - congratulations
-    id: build-message-congratulations
-    uses: skills/action-text-variables@v2
+  - name: Create comment - step finished
+    uses: GrantBirki/comment@v2.1.1
     with:
-      template-file: exercise-toolkit/markdown-templates/readme/congratulations.md
-      template-vars: |
-        login: ${{ github.actor }}
+      file: exercise-toolkit/markdown-templates/step-feedback/step-finished-prepare-next-step.md
+      issue-number: ${{ env.ISSUE_NUMBER }}
+      repository: ${{ env.ISSUE_REPOSITORY }}
+      vars: |
+        next_step_number: 2
+```
 
-  - name: Echo updated text
-    run: echo "$UPDATED_TEXT"
+#### Using with action-text-variables for file updates
+
+Markdown templates can also be used with [skills/action-text-variables](https://github.com/skills/action-text-variables) to generate dynamic content for any purpose, e.g updating a file.
+
+```yaml
+steps:
+  - name: Get markdown templates
+    uses: actions/checkout@v4
+    with:
+      repository: skills/exercise-toolkit
+      path: exercise-toolkit
+      ref: <git-tag>
+
+  - name: Build README from template
+    id: build-readme
+    uses: skills/action-text-variables@v3
+    with:
+      template-file: exercise-toolkit/markdown-templates/readme/exercise-started.md
+      template-vars: |
+        title: ${{ inputs.exercise-title }}
+        login: ${{ github.actor }}
+        issue_url: ${{ needs.create_exercise.outputs.issue-url }}
+
+  - name: Update README file
+    run: echo "$README_CONTENT" > README.md
     env:
-      UPDATED_TEXT: ${{ steps.build-message-congratulations.outputs.updated-text }}
+      README_CONTENT: ${{ steps.build-readme.outputs.updated-text }}
 ```
 
 ## Notable Resources
@@ -101,4 +130,5 @@ These GitHub Actions are particularly useful when creating GitHub Skills Exercis
 
 - **[skills/action-text-variables](https://github.com/skills/action-text-variables)**: Replace variables in template files with dynamic content
 - **[skills/action-keyphrase-checker](https://github.com/skills/action-keyphrase-checker)**: Verify if specific keyphrases exist in files or content
+- **[GrantBirki/comment](https://github.com/GrantBirki/comment)**: Create comments on GitHub issues or pull requests with support for Nunjucks templating
 

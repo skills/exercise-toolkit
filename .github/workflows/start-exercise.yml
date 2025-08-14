@@ -30,7 +30,7 @@ permissions:
   issues: write # Create issue
 
 env:
-  EXERCISE_TOOLKIT_REF: 85962a50afd57183f6703c3d07260bf3a123b3e9
+  EXERCISE_TOOLKIT_REF: 82efbc3de835a2b67d315833bb2f876ae9b4e07a
 
 jobs:
   disable_workflows:
@@ -71,7 +71,7 @@ jobs:
 
       - name: Build welcome message from template
         id: build-issue-description
-        uses: skills/action-text-variables@v2
+        uses: skills/action-text-variables@v3
         with:
           template-file: exercise-toolkit/markdown-templates/step-feedback/welcome.md
           template-vars: |
@@ -114,7 +114,7 @@ jobs:
 
       - name: Build welcome message from template
         id: build-new-readme
-        uses: skills/action-text-variables@v2
+        uses: skills/action-text-variables@v3
         with:
           template-file: exercise-toolkit/markdown-templates/readme/exercise-started.md
           template-vars: |

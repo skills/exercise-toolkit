@@ -30,7 +30,7 @@ permissions:
   issues: write # Create issue
 
 env:
-  EXERCISE_TOOLKIT_REF: 65cba72ffc3aed702ae7234cbcd88cd12520c65e
+  EXERCISE_TOOLKIT_REF: 0b0154a6a164ddb582dcad16aa928b507af0b69f
 
 jobs:
   disable_workflows:

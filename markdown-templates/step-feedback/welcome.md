@@ -21,5 +21,5 @@ Let’s get started - good luck and have fun!
 <sub>— Mona</sub>
 
 {%- if bug_report_url %}
-> <sub> If you encounter any issues along the way please report them [here](bug_report_url).</sub>
+> <sub> If you encounter any issues along the way please report them [here]({{ bug_report_url}}).</sub>
 {%- endif %}

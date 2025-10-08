@@ -4,24 +4,24 @@ on:
   workflow_call:
     inputs:
       exercise-title:
-        description: 'Title of the exercise'
+        description: "Title of the exercise"
         required: true
         type: string
       issue-title-prefix:
-        description: 'Prefix for the exercise title in the issue'
+        description: "Prefix for the exercise title in the issue"
         required: false
         type: string
-        default: 'Exercise: '
+        default: "Exercise: "
       intro-message:
-        description: 'Introduction message for the exercise'
+        description: "Introduction message for the exercise"
         required: true
         type: string
     outputs:
       issue-url:
-        description: 'URL of the created issue'
+        description: "URL of the created issue"
         value: ${{ jobs.create_exercise.outputs.issue-url }}
       issue-number:
-        description: 'Number of the created issue'
+        description: "Number of the created issue"
         value: ${{ jobs.create_exercise.outputs.issue-number }}
 
 permissions:
@@ -30,7 +30,7 @@ permissions:
   issues: write # Create issue
 
 env:
-  EXERCISE_TOOLKIT_REF: 82efbc3de835a2b67d315833bb2f876ae9b4e07a
+  EXERCISE_TOOLKIT_REF: 0b0154a6a164ddb582dcad16aa928b507af0b69f
 
 jobs:
   disable_workflows:
@@ -52,7 +52,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-
   create_exercise:
     name: Create exercise issue
     runs-on: ubuntu-latest
@@ -69,6 +68,24 @@ jobs:
           path: exercise-toolkit
           ref: ${{ env.EXERCISE_TOOLKIT_REF }}
 
+      - name: Get template repository
+        id: get-template-repo
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const { data: repo } = await github.rest.repos.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+
+            if (repo.template_repository) {
+              console.log(`Template repository found: ${repo.template_repository.full_name}`);
+              const issueReportUrl = `https://github.com/${repo.template_repository.full_name}/issues`;
+              core.setOutput('ISSUE_REPORT_URL', issueReportUrl);
+            } else {
+              console.log('No template repository found for this repository');
+            }
+
       - name: Build welcome message from template
         id: build-issue-description
         uses: skills/action-text-variables@v3
@@ -78,6 +95,7 @@ jobs:
             title: ${{ inputs.exercise-title }}
             login: ${{ github.actor }}
             intro_message: ${{ inputs.intro-message }}
+            bug_report_url: ${{ steps.get-template-repo.outputs.ISSUE_REPORT_URL || '' }}
 
       - name: Create issue - add welcome message
         id: create-issue

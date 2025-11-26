@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Disable all exercise workflows
         run: |
@@ -62,7 +62,7 @@ jobs:
 
     steps:
       - name: Get response templates
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: skills/exercise-toolkit
           path: exercise-toolkit
@@ -121,10 +121,10 @@ jobs:
     needs: create_exercise
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Get response templates
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: skills/exercise-toolkit
           path: exercise-toolkit

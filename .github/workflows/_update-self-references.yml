@@ -26,7 +26,7 @@ jobs:
     steps:
       - name: Generate GitHub App token
         id: generate-token
-        uses: actions/create-github-app-token@v1
+        uses: actions/create-github-app-token@v2.2.1
         with:
           app-id: ${{ secrets.EXERCISE_TOOLKIT_APP_ID }}
           private-key: ${{ secrets.EXERCISE_TOOLKIT_APP_PRIVATE_KEY }}

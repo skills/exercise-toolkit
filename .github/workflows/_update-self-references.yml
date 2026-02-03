@@ -1,7 +1,7 @@
-# This workflow uses a Personal Access Token instead of built-in GITHUB_TOKEN to create the pull request
+# This workflow uses a GitHub App token instead of built-in GITHUB_TOKEN to create the pull request
 # This is necessary because it commits changes to workflow files, which is not allowed with the default GITHUB_TOKEN.
 # See example https://github.com/peter-evans/create-pull-request/issues/3558
-# The PAT needs to have `contents: write` `pull-requests: write` and `workflows: write` permissions.
+# The GitHub App needs to have `contents: write` `pull-requests: write` and `workflows: write` permissions.
 
 name: Update Self-References
 
@@ -24,6 +24,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Generate GitHub App token
+        id: generate-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.EXERCISE_TOOLKIT_APP_ID }}
+          private-key: ${{ secrets.EXERCISE_TOOLKIT_APP_PRIVATE_KEY }}
+
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
@@ -41,7 +48,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v8
         with:
-          token: ${{ secrets.EXERCISE_TOOLKIT_TOKEN }}
+          token: ${{ steps.generate-token.outputs.token }}
           commit-message: "chore: update exercise-toolkit self-references to latest commit"
           title: "chore: update exercise-toolkit self-references to latest commit"
           body: |

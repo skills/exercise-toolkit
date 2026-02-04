@@ -96,7 +96,7 @@ jobs:
         uses: jacobtomlinson/gha-find-replace@v3
         with:
           find: '\.\./images/'
-          replace: 'https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref }}/.github/images/'
+          replace: 'https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/.github/images/'
           include: '.github/steps/*.md'
           regex: true
       

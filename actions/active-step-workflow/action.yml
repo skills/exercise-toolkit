@@ -1,0 +1,84 @@
+name: Active Step Workflow
+description: Determines the current step of a GitHub Skills exercise by analyzing enabled workflows
+
+inputs:
+  github-token:
+    description: GitHub token for API access
+    default: ${{ github.token }}
+    required: false
+  workflow-pattern:
+    description: Regex pattern for step workflows
+    required: false
+    default: '^Step \\d+$'
+
+outputs:
+  current-step:
+    description: The current step number
+    value: ${{ steps.get-step.outputs.current-step }}
+  workflow-name:
+    description: Name of the current step workflow file
+    value: ${{ steps.get-step.outputs.workflow-name }}
+
+runs:
+  using: composite
+  steps:
+    - name: Get current step from enabled workflows
+      id: get-step
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ inputs.github-token }}
+        script: |
+          const pattern = new RegExp('${{ inputs.workflow-pattern }}');
+
+          // Get all workflows
+          const { data: workflows } = await github.rest.actions.listRepoWorkflows({
+            owner: context.repo.owner,
+            repo: context.repo.repo
+          });
+
+          // Log all workflows found
+          console.log(`Found ${workflows.workflows.length} total workflows:`);
+          workflows.workflows.forEach(workflow => {
+            console.log(`  - ${workflow.name} (state: ${workflow.state})`);
+          });
+
+          // Log the first workflow with all fields for debugging
+          if (workflows.workflows.length > 0) {
+            console.log('First workflow object with all fields:');
+            console.log(JSON.stringify(workflows.workflows[0], null, 2));
+          }
+
+          // Find enabled step workflows
+          const enabledSteps = workflows.workflows
+            .filter(workflow => workflow.state === 'active' && pattern.test(workflow.name))
+            .map(workflow => {
+              // Match "Step X" format
+              const match = workflow.name.match(/^Step (\d+)$/);
+              return {
+                name: workflow.name,
+                stepNumber: match ? match[1] : null
+              };
+            })
+            .filter(step => step.stepNumber !== null);
+
+          if (enabledSteps.length === 0) {
+            core.setFailed('No enabled step workflows found');
+            return;
+          }
+
+          // Check if all enabled steps have the same base number
+          const uniqueStepNumbers = [...new Set(enabledSteps.map(step => step.stepNumber))];
+
+          if (uniqueStepNumbers.length > 1) {
+            core.setFailed(`Multiple different step numbers enabled: ${uniqueStepNumbers.join(', ')}`);
+            return;
+          }
+
+          const currentStep = uniqueStepNumbers[0];
+          const primaryWorkflow = enabledSteps.find(step => step.name.startsWith(`${currentStep}-`)) || enabledSteps[0];
+
+          core.setOutput('current-step', currentStep);
+          core.setOutput('workflow-name', primaryWorkflow.name);
+
+          console.log(`Current step: ${currentStep}`);
+          console.log(`Primary workflow: ${primaryWorkflow.name}`);

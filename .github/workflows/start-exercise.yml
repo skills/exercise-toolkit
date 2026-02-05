@@ -53,7 +53,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   create_exercise:
-    name: Create exercise issue
+    name: Create exercise issue and update README
     runs-on: ubuntu-latest
 
     outputs:
@@ -61,6 +61,9 @@ jobs:
       issue-number: ${{ steps.create-issue.outputs.ISSUE_NUMBER }}
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
       - name: Get response templates
         uses: actions/checkout@v6
         with:
@@ -82,10 +85,21 @@ jobs:
               console.log(`Template repository found: ${repo.template_repository.full_name}`);
               const issueReportUrl = `https://github.com/${repo.template_repository.full_name}/issues`;
               core.setOutput('ISSUE_REPORT_URL', issueReportUrl);
+              core.setOutput('TEMPLATE_REPOSITORY', repo.template_repository.full_name);
+
             } else {
               console.log('No template repository found for this repository');
             }
 
+      - name: Find and replace image URLs in step files
+        if: steps.get-template-repo.outputs.TEMPLATE_REPOSITORY != ''
+        uses: jacobtomlinson/gha-find-replace@v3
+        with:
+          find: '\.\./images/'
+          replace: 'https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/.github/images/'
+          include: '.github/steps/*.md'
+          regex: true
+      
       - name: Build welcome message from template
         id: build-issue-description
         uses: skills/action-text-variables@v3
@@ -115,21 +129,7 @@ jobs:
           EXERCISE_TITLE: ${{ inputs.exercise-title }}
           ISSUE_TITLE_PREFIX: ${{ inputs.issue-title-prefix }}
 
-  update_readme:
-    name: Update README
-    runs-on: ubuntu-latest
-    needs: create_exercise
-
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Get response templates
-        uses: actions/checkout@v6
-        with:
-          repository: skills/exercise-toolkit
-          path: exercise-toolkit
-          ref: ${{ env.EXERCISE_TOOLKIT_REF }}
-
+      
       - name: Build welcome message from template
         id: build-new-readme
         uses: skills/action-text-variables@v3
@@ -138,7 +138,7 @@ jobs:
           template-vars: |
             title: ${{ inputs.exercise-title }}
             login: ${{ github.actor }}
-            issue_url: ${{ needs.create_exercise.outputs.issue-url }}
+            issue_url: ${{ steps.create-issue.outputs.ISSUE_URL }}
 
       - name: Overwrite README
         env:
@@ -148,6 +148,6 @@ jobs:
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
         with:
-          add: "README.md"
+          add: "README.md .github/steps/*.md"
           message: "Start exercise"
           default_author: github_actions

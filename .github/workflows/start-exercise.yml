@@ -106,7 +106,7 @@ jobs:
             files.forEach(file => {
               const content = fs.readFileSync(file, 'utf8');
 
-              // Replace ../images/* links with raw URLs.
+              // Replace ../images/* links with GitHub blob URLs suffixed with ?raw=true.
               const updatedContent = content.replace(
                 /\.\.\/images\/([^\s)"']+)/g,
                 'https://github.com/${{ github.repository }}/blob/${{ github.ref_name }}/.github/images/$1?raw=true'

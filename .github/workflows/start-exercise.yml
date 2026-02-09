@@ -136,6 +136,12 @@ jobs:
                 const absoluteImagePath = path.resolve(fileDir, imagePath);
                 const repoRelativePath = path.relative(process.cwd(), absoluteImagePath).replace(/\\/g, '/');
                 
+                // Security: Ensure the path doesn't escape the repository
+                if (repoRelativePath.startsWith('..')) {
+                  console.log(`Skipping image outside repository: ${imagePath}`);
+                  return match;
+                }
+                
                 const newUrl = `https://github.com/${repository}/blob/${refName}/${repoRelativePath}?raw=true`;
                 modified = true;
                 return `![${alt}](${newUrl})`;
@@ -153,6 +159,12 @@ jobs:
                 const fileDir = path.dirname(file);
                 const absoluteImagePath = path.resolve(fileDir, imagePath);
                 const repoRelativePath = path.relative(process.cwd(), absoluteImagePath).replace(/\\/g, '/');
+                
+                // Security: Ensure the path doesn't escape the repository
+                if (repoRelativePath.startsWith('..')) {
+                  console.log(`Skipping image outside repository: ${imagePath}`);
+                  return match;
+                }
                 
                 const newUrl = `https://github.com/${repository}/blob/${refName}/${repoRelativePath}?raw=true`;
                 modified = true;

@@ -93,12 +93,77 @@ jobs:
 
       - name: Find and replace image URLs in step files
         if: steps.get-template-repo.outputs.TEMPLATE_REPOSITORY != ''
-        uses: jacobtomlinson/gha-find-replace@v3
+        uses: actions/github-script@v8
         with:
-          find: '\.\./images/'
-          replace: 'https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/.github/images/'
-          include: '.github/steps/*.md'
-          regex: true
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            // Find all markdown files in .github/steps/
+            const stepsDir = '.github/steps';
+            let files = [];
+            
+            try {
+              const entries = fs.readdirSync(stepsDir, { withFileTypes: true });
+              for (const entry of entries) {
+                if (entry.isFile() && entry.name.endsWith('.md')) {
+                  files.push(path.join(stepsDir, entry.name));
+                }
+              }
+            } catch (err) {
+              console.log(`Directory ${stepsDir} not found or empty`);
+              return;
+            }
+            
+            const repository = '${{ github.repository }}';
+            const refName = '${{ github.ref_name }}';
+            
+            for (const file of files) {
+              let content = fs.readFileSync(file, 'utf8');
+              let modified = false;
+              
+              // Replace relative image paths in markdown image syntax: ![alt](path)
+              // Matches both ../path and ./path and plain paths
+              const markdownImageRegex = /!\[([^\]]*)\]\(([^)]+\.(png|jpg|jpeg|gif|svg|webp))\)/gi;
+              content = content.replace(markdownImageRegex, (match, alt, imagePath, ext) => {
+                // Skip if already an absolute URL
+                if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+                  return match;
+                }
+                
+                // Calculate the relative path from .github/steps/ to the image
+                const fileDir = path.dirname(file);
+                const absoluteImagePath = path.resolve(fileDir, imagePath);
+                const repoRelativePath = path.relative(process.cwd(), absoluteImagePath);
+                
+                const newUrl = `https://github.com/${repository}/blob/${refName}/${repoRelativePath}?raw=true`;
+                modified = true;
+                return `![${alt}](${newUrl})`;
+              });
+              
+              // Replace relative image paths in HTML img tags: <img src="path">
+              const htmlImageRegex = /<img([^>]*?)src=["']([^"']+\.(png|jpg|jpeg|gif|svg|webp))["']([^>]*?)>/gi;
+              content = content.replace(htmlImageRegex, (match, before, imagePath, ext, after) => {
+                // Skip if already an absolute URL
+                if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+                  return match;
+                }
+                
+                // Calculate the relative path from .github/steps/ to the image
+                const fileDir = path.dirname(file);
+                const absoluteImagePath = path.resolve(fileDir, imagePath);
+                const repoRelativePath = path.relative(process.cwd(), absoluteImagePath);
+                
+                const newUrl = `https://github.com/${repository}/blob/${refName}/${repoRelativePath}?raw=true`;
+                modified = true;
+                return `<img${before}src="${newUrl}"${after}>`;
+              });
+              
+              if (modified) {
+                fs.writeFileSync(file, content, 'utf8');
+                console.log(`Updated image URLs in ${file}`);
+              }
+            }
       
       - name: Build welcome message from template
         id: build-issue-description

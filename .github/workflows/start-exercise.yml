@@ -94,11 +94,13 @@ jobs:
       - name: Find and replace image URLs in step files
         if: steps.get-template-repo.outputs.TEMPLATE_REPOSITORY != ''
         uses: actions/github-script@v8
+        env:
+          STEP_FILES_GLOB: .github/steps/*.md
         with:
           script: |
             const fs = require('fs');
 
-            const globber = await glob.create('.github/steps/*.md');
+            const globber = await glob.create(process.env.STEP_FILES_GLOB);
             const files = await globber.glob();
 
             files.forEach(file => {

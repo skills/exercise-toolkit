@@ -93,12 +93,32 @@ jobs:
 
       - name: Find and replace image URLs in step files
         if: steps.get-template-repo.outputs.TEMPLATE_REPOSITORY != ''
-        uses: jacobtomlinson/gha-find-replace@v3
+        uses: actions/github-script@v8
         with:
-          find: '\.\./images/([^\s)]+)'
-          replace: 'https://github.com/${{ github.repository }}/blob/${{ github.ref_name }}/.github/images/$1?raw=true'
-          include: '.github/steps/*.md'
-          regex: true
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const glob = require('glob');
+
+            // Find all step markdown files
+            const files = glob.sync('.github/steps/*.md');
+            
+            console.log(`Found ${files.length} step files to process`);
+            
+            files.forEach(file => {
+              const content = fs.readFileSync(file, 'utf8');
+              
+              // Replace relative image URLs with GitHub blob URLs
+              const updatedContent = content.replace(
+                /\.\.\/images\/([^\s)]+)/g,
+                'https://github.com/${{ github.repository }}/blob/${{ github.ref_name }}/.github/images/$1?raw=true'
+              );
+              
+              if (content !== updatedContent) {
+                fs.writeFileSync(file, updatedContent, 'utf8');
+                console.log(`Updated: ${file}`);
+              }
+            });
       
       - name: Build welcome message from template
         id: build-issue-description

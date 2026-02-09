@@ -95,7 +95,7 @@ jobs:
         if: steps.get-template-repo.outputs.TEMPLATE_REPOSITORY != ''
         uses: jacobtomlinson/gha-find-replace@v3
         with:
-          find: '\.\./images/([^\s\)]+)'
+          find: '\.\./images/([^\s)]+)'
           replace: 'https://github.com/${{ github.repository }}/blob/${{ github.ref_name }}/.github/images/$1?raw=true'
           include: '.github/steps/*.md'
           regex: true

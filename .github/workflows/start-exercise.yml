@@ -134,7 +134,7 @@ jobs:
                 // Calculate the relative path from .github/steps/ to the image
                 const fileDir = path.dirname(file);
                 const absoluteImagePath = path.resolve(fileDir, imagePath);
-                const repoRelativePath = path.relative(process.cwd(), absoluteImagePath);
+                const repoRelativePath = path.relative(process.cwd(), absoluteImagePath).replace(/\\/g, '/');
                 
                 const newUrl = `https://github.com/${repository}/blob/${refName}/${repoRelativePath}?raw=true`;
                 modified = true;
@@ -152,7 +152,7 @@ jobs:
                 // Calculate the relative path from .github/steps/ to the image
                 const fileDir = path.dirname(file);
                 const absoluteImagePath = path.resolve(fileDir, imagePath);
-                const repoRelativePath = path.relative(process.cwd(), absoluteImagePath);
+                const repoRelativePath = path.relative(process.cwd(), absoluteImagePath).replace(/\\/g, '/');
                 
                 const newUrl = `https://github.com/${repository}/blob/${refName}/${repoRelativePath}?raw=true`;
                 modified = true;

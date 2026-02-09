@@ -109,8 +109,9 @@ jobs:
               const content = fs.readFileSync(file, 'utf8');
               
               // Replace relative image URLs with GitHub blob URLs
+              // This handles both markdown syntax ![](../images/file.png) and HTML <img src="../images/file.png">
               const updatedContent = content.replace(
-                /\.\.\/images\/([^\s)]+)/g,
+                /\.\.\/images\/([^\s)"']+)/g,
                 'https://github.com/${{ github.repository }}/blob/${{ github.ref_name }}/.github/images/$1?raw=true'
               );
               

@@ -98,10 +98,9 @@ jobs:
           script: |
             const fs = require('fs');
             const path = require('path');
-            const glob = require('glob');
 
-            // Find all step markdown files
-            const files = glob.sync('.github/steps/*.md');
+            // Find all step markdown files using pre-loaded glob
+            const files = await glob.glob('.github/steps/*.md');
             
             console.log(`Found ${files.length} step files to process`);
             

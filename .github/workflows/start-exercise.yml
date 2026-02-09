@@ -100,7 +100,8 @@ jobs:
             const path = require('path');
 
             // Find all step markdown files using pre-loaded glob
-            const files = await glob.glob('.github/steps/*.md');
+            const globber = await glob.create('.github/steps/*.md');
+            const files = await globber.glob();
             
             console.log(`Found ${files.length} step files to process`);
             

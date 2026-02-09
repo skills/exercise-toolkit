@@ -122,9 +122,12 @@ jobs:
               let content = fs.readFileSync(file, 'utf8');
               let modified = false;
               
+              // Common image file extensions
+              const imageExtensions = '(png|jpg|jpeg|gif|svg|webp)';
+              
               // Replace relative image paths in markdown image syntax: ![alt](path)
               // Matches both ../path and ./path and plain paths
-              const markdownImageRegex = /!\[([^\]]*)\]\(([^)]+\.(png|jpg|jpeg|gif|svg|webp))\)/gi;
+              const markdownImageRegex = new RegExp(`!\\[([^\\]]*)\\]\\(([^)]+\\.${imageExtensions})\\)`, 'gi');
               content = content.replace(markdownImageRegex, (match, alt, imagePath, ext) => {
                 // Skip if already an absolute URL
                 if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
@@ -148,7 +151,7 @@ jobs:
               });
               
               // Replace relative image paths in HTML img tags: <img src="path">
-              const htmlImageRegex = /<img([^>]*?)src=["']([^"']+\.(png|jpg|jpeg|gif|svg|webp))["']([^>]*?)>/gi;
+              const htmlImageRegex = new RegExp(`<img([^>]*?)src=["']([^"']+\\.${imageExtensions})["']([^>]*?)>`, 'gi');
               content = content.replace(htmlImageRegex, (match, before, imagePath, ext, after) => {
                 // Skip if already an absolute URL
                 if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {

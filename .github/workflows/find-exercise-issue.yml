@@ -56,7 +56,8 @@ jobs:
 
             const issue = issues.find(issue => issue.title.includes(process.env.ISSUE_TITLE_PREFIX));
             if (!issue) {
-              throw new Error('No exercise issue found');
+              core.setFailed('No exercise issue found');
+              return;
             }
             core.info(`Exercise issue found: #${issue.number} (${issue.html_url})`);
 

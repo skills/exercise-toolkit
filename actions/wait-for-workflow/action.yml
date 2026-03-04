@@ -72,7 +72,17 @@ runs:
           const timeout = parseInt(process.env.INPUT_TIMEOUT, 10);
           const failOnTimeout = process.env.INPUT_FAIL_ON_TIMEOUT === 'true';
 
-          const maxAttempts = Math.ceil(timeout / pollingInterval);
+          if (!Number.isInteger(pollingInterval) || pollingInterval <= 0) {
+            core.setFailed(`Invalid polling-interval: "${process.env.INPUT_POLLING_INTERVAL}". Provide a positive integer.`);
+            return;
+          }
+
+          if (!Number.isInteger(timeout) || timeout < 0) {
+            core.setFailed(`Invalid timeout: "${process.env.INPUT_TIMEOUT}". Provide an integer greater than or equal to 0.`);
+            return;
+          }
+
+          const maxAttempts = Math.max(1, Math.ceil(timeout / pollingInterval));
 
           core.info(`Waiting for workflow "${workflowId}" to reach status "${targetStatus}"`);
           if (headSha) core.info(`Filtering by head SHA: ${headSha}`);

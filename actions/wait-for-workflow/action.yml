@@ -46,7 +46,7 @@ outputs:
     value: ${{ steps.poll.outputs.conclusion }}
 
 runs:
-  using: composite
+  using: "composite"
   steps:
     - name: Poll workflow run status
       id: poll

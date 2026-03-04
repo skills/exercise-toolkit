@@ -6,22 +6,22 @@ This action is useful when one workflow must wait for another workflow run to fi
 
 ## Inputs ⚙️
 
-| Name               | Description                                                                             | Required | Default                         |
-| ------------------ | --------------------------------------------------------------------------------------- | -------- | ------------------------------- |
-| `workflow-id`      | The workflow file name or numeric ID to poll (e.g. `ci.yml`)                           | Yes      | N/A                             |
-| `head-sha`         | Filter runs by commit SHA. When omitted, checks the most recent run                    | No       | _latest run_                    |
-| `status`           | The target run status to wait for                                                       | No       | `completed`                     |
-| `owner`            | Repository owner                                                                         | No       | `${{ github.repository_owner }}` |
-| `repo`             | Repository name                                                                          | No       | `${{ github.event.repository.name }}` |
-| `polling-interval` | Seconds between each poll attempt                                                        | No       | `10`                            |
-| `timeout`          | Maximum seconds to wait before giving up                                                 | No       | `180`                           |
-| `fail-on-timeout`  | Whether to fail the step if the timeout is reached                                       | No       | `false`                         |
-| `token`            | GitHub token for API requests                                                            | No       | `${{ github.token }}`           |
+| Name               | Description                                                         | Required | Default                               |
+| ------------------ | ------------------------------------------------------------------- | -------- | ------------------------------------- |
+| `workflow-id`      | The workflow file name or numeric ID to poll (e.g. `ci.yml`)        | Yes      | N/A                                   |
+| `head-sha`         | Filter runs by commit SHA. When omitted, checks the most recent run | No       | _latest run_                          |
+| `status`           | The target run status to wait for                                   | No       | `completed`                           |
+| `owner`            | Repository owner                                                    | No       | `${{ github.repository_owner }}`      |
+| `repo`             | Repository name                                                     | No       | `${{ github.event.repository.name }}` |
+| `polling-interval` | Seconds between each poll attempt                                   | No       | `10`                                  |
+| `timeout`          | Maximum seconds to wait before giving up                            | No       | `180`                                 |
+| `fail-on-timeout`  | Whether to fail the step if the timeout is reached                  | No       | `false`                               |
+| `token`            | GitHub token for API requests                                       | No       | `${{ github.token }}`                 |
 
 ## Outputs 📤
 
-| Name         | Description                                                                                      |
-| ------------ | ------------------------------------------------------------------------------------------------ |
+| Name         | Description                                                                                   |
+| ------------ | --------------------------------------------------------------------------------------------- |
 | `conclusion` | The conclusion of the matched workflow run (for example `success` or `failure`), or `timeout` |
 
 ## Usage 🚀

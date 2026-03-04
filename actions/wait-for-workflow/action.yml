@@ -50,7 +50,7 @@ runs:
   steps:
     - name: Poll workflow run status
       id: poll
-      uses: actions/github-script@v7
+      uses: actions/github-script@v8
       env:
         INPUT_WORKFLOW_ID: ${{ inputs.workflow-id }}
         INPUT_HEAD_SHA: ${{ inputs.head-sha }}

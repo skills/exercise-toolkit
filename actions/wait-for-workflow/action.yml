@@ -87,7 +87,20 @@ runs:
             };
             if (headSha) params.head_sha = headSha;
 
-            const { data } = await github.rest.actions.listWorkflowRuns(params);
+            let data;
+            try {
+              ({ data } = await github.rest.actions.listWorkflowRuns(params));
+            } catch (error) {
+              const errorStatus = error?.status ?? error?.response?.status;
+
+              if (errorStatus === 404) {
+                core.setFailed(`Workflow "${workflowId}" was not found`);
+                return;
+              }
+
+              throw error;
+            }
+
             const run = data.workflow_runs[0];
             const status = run?.status ?? 'not_found';
 

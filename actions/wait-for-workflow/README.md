@@ -27,6 +27,10 @@ This action is useful when one workflow must wait for another workflow run to fi
 ## Usage 🚀
 
 ```yaml
+permissions:
+  contents: read
+  actions: read
+
 steps:
   - uses: actions/checkout@v6
 
@@ -40,7 +44,4 @@ steps:
       polling-interval: 10
       timeout: 300
       fail-on-timeout: true
-
-  - name: Use the workflow conclusion
-    run: echo "CI concluded with: ${{ steps.wait-for-ci.outputs.conclusion }}"
 ```

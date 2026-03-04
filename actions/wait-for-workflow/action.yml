@@ -1,0 +1,138 @@
+name: Wait for Workflow Run
+description: >
+  Polls the GitHub API until a workflow run reaches a target status.
+  Useful for coordinating workflows that depend on another workflow's completion
+  without using the `workflow_run` event trigger.
+
+inputs:
+  workflow-id:
+    description: "The workflow file name or numeric ID to poll (e.g. 'ci.yml')"
+    required: true
+  head-sha:
+    description: "Filter runs by commit SHA. When omitted, checks the most recent run."
+    required: false
+  status:
+    description: "The target run status to wait for."
+    required: false
+    default: "completed"
+  owner:
+    description: "Repository owner. Defaults to the current repository owner."
+    required: false
+    default: ${{ github.repository_owner }}
+  repo:
+    description: "Repository name. Defaults to the current repository name."
+    required: false
+    default: ${{ github.event.repository.name }}
+  polling-interval:
+    description: "Seconds between each poll attempt."
+    required: false
+    default: "10"
+  timeout:
+    description: "Maximum seconds to wait before giving up."
+    required: false
+    default: "180"
+  fail-on-timeout:
+    description: "Whether to fail the step if the timeout is reached."
+    required: false
+    default: "false"
+  token:
+    description: "GitHub token for API requests."
+    required: false
+    default: ${{ github.token }}
+
+outputs:
+  conclusion:
+    description: "The conclusion of the matched workflow run (e.g. 'success', 'failure'), or 'timeout' if timed out."
+    value: ${{ steps.poll.outputs.conclusion }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Poll workflow run status
+      id: poll
+      uses: actions/github-script@v8
+      env:
+        INPUT_WORKFLOW_ID: ${{ inputs.workflow-id }}
+        INPUT_HEAD_SHA: ${{ inputs.head-sha }}
+        INPUT_STATUS: ${{ inputs.status }}
+        INPUT_OWNER: ${{ inputs.owner }}
+        INPUT_REPO: ${{ inputs.repo }}
+        INPUT_POLLING_INTERVAL: ${{ inputs.polling-interval }}
+        INPUT_TIMEOUT: ${{ inputs.timeout }}
+        INPUT_FAIL_ON_TIMEOUT: ${{ inputs.fail-on-timeout }}
+      with:
+        github-token: ${{ inputs.token }}
+        script: |
+          const workflowId = process.env.INPUT_WORKFLOW_ID;
+          const headSha = process.env.INPUT_HEAD_SHA || undefined;
+          const targetStatus = process.env.INPUT_STATUS;
+          const owner = process.env.INPUT_OWNER;
+          const repo = process.env.INPUT_REPO;
+          const pollingInterval = parseInt(process.env.INPUT_POLLING_INTERVAL, 10);
+          const timeout = parseInt(process.env.INPUT_TIMEOUT, 10);
+          const failOnTimeout = process.env.INPUT_FAIL_ON_TIMEOUT === 'true';
+
+          if (!Number.isInteger(pollingInterval) || pollingInterval <= 0) {
+            core.setFailed(`Invalid polling-interval: "${process.env.INPUT_POLLING_INTERVAL}". Provide a positive integer.`);
+            return;
+          }
+
+          if (!Number.isInteger(timeout) || timeout < 0) {
+            core.setFailed(`Invalid timeout: "${process.env.INPUT_TIMEOUT}". Provide an integer greater than or equal to 0.`);
+            return;
+          }
+
+          const maxAttempts = Math.max(1, Math.ceil(timeout / pollingInterval));
+
+          core.info(`Waiting for workflow "${workflowId}" to reach status "${targetStatus}"`);
+          if (headSha) core.info(`Filtering by head SHA: ${headSha}`);
+          core.info(`Polling every ${pollingInterval}s, timeout after ${timeout}s (${maxAttempts} attempts)`);
+
+          for (let i = 1; i <= maxAttempts; i++) {
+            const params = {
+              owner,
+              repo,
+              workflow_id: workflowId,
+              per_page: 1,
+            };
+            if (headSha) params.head_sha = headSha;
+
+            let data;
+            try {
+              ({ data } = await github.rest.actions.listWorkflowRuns(params));
+            } catch (error) {
+              const errorStatus = error?.status ?? error?.response?.status;
+
+              if (errorStatus === 404) {
+                core.setFailed(`Workflow "${workflowId}" was not found`);
+                return;
+              }
+
+              throw error;
+            }
+
+            const run = data.workflow_runs[0];
+            const status = run?.status ?? 'not_found';
+
+            core.info(`Attempt ${i}/${maxAttempts}: status = ${status}`);
+
+            if (status === targetStatus) {
+              const conclusion = run?.conclusion ?? 'unknown';
+              core.info(`Workflow reached "${targetStatus}" with conclusion "${conclusion}". Waiting one more interval for event propagation.`);
+              await new Promise(r => setTimeout(r, pollingInterval * 1000));
+              core.setOutput('conclusion', conclusion);
+              return;
+            }
+
+            if (i === maxAttempts) {
+              core.setOutput('conclusion', 'timeout');
+              if (failOnTimeout) {
+                core.setFailed(`Timed out after ${timeout}s waiting for workflow "${workflowId}" to reach status "${targetStatus}".`);
+              } else {
+                core.warning(`Timed out after ${timeout}s waiting for workflow "${workflowId}" to reach status "${targetStatus}". Proceeding anyway.`);
+              }
+              return;
+            }
+
+            await new Promise(r => setTimeout(r, pollingInterval * 1000));
+          }

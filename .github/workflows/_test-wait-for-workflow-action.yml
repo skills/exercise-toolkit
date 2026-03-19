@@ -1,0 +1,41 @@
+name: Test Wait for Workflow Action
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "actions/wait-for-workflow/**"
+  pull_request:
+    paths:
+      - "actions/wait-for-workflow/**"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  test-nonexistent-workflow:
+    runs-on: ubuntu-latest
+    name: Test Nonexistent Workflow Fails
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Test with non-existent workflow
+        id: nonexistent
+        uses: ./actions/wait-for-workflow
+        with:
+          workflow-id: this-workflow-does-not-exist.yml
+          timeout: 10
+        continue-on-error: true
+
+      - name: Verify action failed as expected
+        if: steps.nonexistent.outcome == 'failure'
+        run: echo "✅ Action correctly failed when workflow doesn't exist"
+
+      - name: Fail job if action didn't fail
+        if: steps.nonexistent.outcome != 'failure'
+        run: |
+          echo "❌ Action should have failed but didn't"
+          exit 1

@@ -84,6 +84,21 @@ runs:
 
           const maxAttempts = Math.max(1, Math.ceil(timeout / pollingInterval));
 
+          try {
+            await github.rest.actions.getWorkflow({
+              owner,
+              repo,
+              workflow_id: workflowId,
+            });
+          } catch (error) {
+            const errorStatus = error?.status ?? error?.response?.status;
+            if (errorStatus === 404) {
+              core.setFailed(`Workflow "${workflowId}" does not exist`);
+              return;
+            }
+            throw error;
+          }
+
           core.info(`Waiting for workflow "${workflowId}" to reach status "${targetStatus}"`);
           if (headSha) core.info(`Filtering by head SHA: ${headSha}`);
           core.info(`Polling every ${pollingInterval}s, timeout after ${timeout}s (${maxAttempts} attempts)`);

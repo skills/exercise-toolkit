@@ -15,7 +15,7 @@ This action is useful when one workflow must wait for another workflow run to fi
 | `repo`             | Repository name                                                     | No       | `${{ github.event.repository.name }}` |
 | `polling-interval` | Seconds between each poll attempt                                   | No       | `10`                                  |
 | `timeout`          | Maximum seconds to wait before giving up                            | No       | `180`                                 |
-| `fail-on-timeout`  | Whether to fail the step if the timeout is reached                  | No       | `false`                               |
+| `fail-on-timeout`  | Whether to fail the step if the timeout is reached                  | No       | `true`                               |
 | `token`            | GitHub token for API requests                                       | No       | `${{ github.token }}`                 |
 
 ## Outputs 📤

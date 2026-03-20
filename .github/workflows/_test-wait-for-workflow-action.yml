@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "actions/wait-for-workflow/**"
+      - ".github/workflows/_lint.yml"
 
 permissions:
   contents: read

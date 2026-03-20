@@ -34,7 +34,7 @@ inputs:
   fail-on-timeout:
     description: "Whether to fail the step if the timeout is reached."
     required: false
-    default: "false"
+    default: "true"
   token:
     description: "GitHub token for API requests."
     required: false

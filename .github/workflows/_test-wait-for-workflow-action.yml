@@ -1,11 +1,6 @@
 name: Test Wait for Workflow Action
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "actions/wait-for-workflow/**"
   pull_request:
     paths:
       - "actions/wait-for-workflow/**"
@@ -20,7 +15,7 @@ jobs:
     name: Test Nonexistent Workflow Fails
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Test with non-existent workflow
         id: nonexistent
@@ -39,3 +34,28 @@ jobs:
         run: |
           echo "❌ Action should have failed but didn't"
           exit 1
+
+  test-existing-workflow:
+    runs-on: ubuntu-latest
+    name: Test Existing Workflow Does Not Fail
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Test with existing workflow (_lint.yml)
+        id: existing
+        uses: ./actions/wait-for-workflow
+        with:
+          workflow-id: _lint.yml
+          timeout: 10
+        continue-on-error: true
+
+      - name: Verify action did not fail due to workflow not existing
+        if: steps.existing.outcome == 'failure'
+        run: |
+          echo "❌ Action failed unexpectedly for an existing workflow"
+          exit 1
+
+      - name: Confirm action passed or timed out (not a not-found failure)
+        if: steps.existing.outcome != 'failure'
+        run: echo "✅ Action correctly recognized the existing workflow"

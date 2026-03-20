@@ -93,7 +93,7 @@ runs:
           } catch (error) {
             const errorStatus = error?.status ?? error?.response?.status;
             if (errorStatus === 404) {
-              core.setFailed(`Workflow "${workflowId}" does not exist`);
+              core.setFailed(`Workflow "${workflowId}" was not found`);
               return;
             }
             throw error;

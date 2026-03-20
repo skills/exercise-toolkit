@@ -92,7 +92,6 @@ jobs:
             }
 
       - name: Find and replace image URLs in step files
-        if: steps.get-template-repo.outputs.TEMPLATE_REPOSITORY != ''
         uses: actions/github-script@v8
         env:
           STEP_FILES_GLOB: .github/steps/*.md

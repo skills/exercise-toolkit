@@ -163,7 +163,7 @@ jobs:
         run: echo "$README_TEXT" > README.md
 
       - name: Commit changes
-        uses: EndBug/add-and-commit@v9
+        uses: EndBug/add-and-commit@v10
         with:
           add: "README.md .github/steps/*.md"
           message: "Start exercise"

@@ -51,16 +51,18 @@ jobs:
           status: in_progress
           timeout: 20
           polling-interval: 5
+          fail-on-timeout: true
 
-      - name: Test current workflow cannot reach completed while running
+      - name: Test current workflow timeout when waiting for completed status
         id: completed-timeout
         uses: ./actions/wait-for-workflow
         with:
           workflow-id: _test-wait-for-workflow-action.yml
           # This job is still running, so waiting for completed should time out.
           status: completed
-          timeout: 20
+          timeout: 10
           polling-interval: 5
+          fail-on-timeout: true
         continue-on-error: true
 
       - name: Fail job if completed status check did not time out

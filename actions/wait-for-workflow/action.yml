@@ -34,7 +34,7 @@ inputs:
   fail-on-timeout:
     description: "Whether to fail the step if the timeout is reached."
     required: false
-    default: "false"
+    default: "true"
   token:
     description: "GitHub token for API requests."
     required: false
@@ -83,6 +83,21 @@ runs:
           }
 
           const maxAttempts = Math.max(1, Math.ceil(timeout / pollingInterval));
+
+          try {
+            await github.rest.actions.getWorkflow({
+              owner,
+              repo,
+              workflow_id: workflowId,
+            });
+          } catch (error) {
+            const errorStatus = error?.status ?? error?.response?.status;
+            if (errorStatus === 404) {
+              core.setFailed(`Workflow "${workflowId}" was not found`);
+              return;
+            }
+            throw error;
+          }
 
           core.info(`Waiting for workflow "${workflowId}" to reach status "${targetStatus}"`);
           if (headSha) core.info(`Filtering by head SHA: ${headSha}`);

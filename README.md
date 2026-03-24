@@ -26,7 +26,6 @@ This repository serves as a comprehensive toolkit for creating and managing GitH
 - **[markdown-templates](/markdown-templates)**: Ready-to-use Markdown templates for creating consistent exercise documentation, instructions, and README files
 - **[actions](/actions)**: Simple composite actions to help when building GitHub Skills exercises
 
-
 ## Examples
 
 ### ⚙️ Reusable Workflows
@@ -61,7 +60,7 @@ For a full list of markdown templates go to the **[markdown-templates](/markdown
 ```yaml
 steps:
   - name: Get markdown templates
-    uses: actions/checkout@v4
+    uses: actions/checkout@v6
     with:
       repository: skills/exercise-toolkit
       path: exercise-toolkit
@@ -79,7 +78,7 @@ Templates are often used with [GrantBirki/comment](https://github.com/GrantBirki
 ```yaml
 steps:
   - name: Get markdown templates
-    uses: actions/checkout@v4
+    uses: actions/checkout@v6
     with:
       repository: skills/exercise-toolkit
       path: exercise-toolkit
@@ -102,7 +101,7 @@ Markdown templates can also be used with [skills/action-text-variables](https://
 ```yaml
 steps:
   - name: Get markdown templates
-    uses: actions/checkout@v4
+    uses: actions/checkout@v6
     with:
       repository: skills/exercise-toolkit
       path: exercise-toolkit
@@ -110,7 +109,7 @@ steps:
 
   - name: Build README from template
     id: build-readme
-    uses: skills/action-text-variables@v3
+    uses: skills/action-text-variables@v4
     with:
       template-file: exercise-toolkit/markdown-templates/readme/exercise-started.md
       template-vars: |
@@ -131,4 +130,3 @@ These GitHub Actions are particularly useful when creating GitHub Skills Exercis
 - **[skills/action-text-variables](https://github.com/skills/action-text-variables)**: Replace variables in template files with dynamic content
 - **[skills/action-keyphrase-checker](https://github.com/skills/action-keyphrase-checker)**: Verify if specific keyphrases exist in files or content
 - **[GrantBirki/comment](https://github.com/GrantBirki/comment)**: Create comments on GitHub issues or pull requests with support for Nunjucks templating
-

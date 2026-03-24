@@ -4,7 +4,7 @@ on:
   pull_request:
     paths:
       - "actions/wait-for-workflow/**"
-      - ".github/workflows/_lint.yml"
+      - ".github/workflows/_test-wait-for-workflow-action.yml"
 
 permissions:
   contents: read
@@ -38,12 +38,35 @@ jobs:
 
   test-existing-workflow:
     runs-on: ubuntu-latest
-    name: Test Existing Workflow Does Not Fail
+    name: Test Current Workflow Status Handling
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Test with existing workflow (_lint.yml)
+      - name: Test current workflow reaches in_progress
         uses: ./actions/wait-for-workflow
         with:
-          workflow-id: _lint.yml
+          # Hardcoded to this workflow file.
+          workflow-id: _test-wait-for-workflow-action.yml
+          status: in_progress
+          timeout: 20
+          polling-interval: 5
+
+      - name: Test current workflow cannot reach completed while running
+        id: completed-timeout
+        uses: ./actions/wait-for-workflow
+        with:
+          workflow-id: _test-wait-for-workflow-action.yml
+          # This job is still running, so waiting for completed should time out.
+          status: completed
+          timeout: 20
+          polling-interval: 5
+        continue-on-error: true
+
+      - name: Fail job if completed status check did not time out
+        if: steps.completed-timeout.outcome != 'failure' || steps.completed-timeout.outputs.conclusion != 'timeout'
+        run: |
+          echo "Action should have timed out with failure when waiting for completed status"
+          echo "outcome=${{ steps.completed-timeout.outcome }}"
+          echo "conclusion=${{ steps.completed-timeout.outputs.conclusion }}"
+          exit 1

@@ -119,7 +119,7 @@ jobs:
       
       - name: Build welcome message from template
         id: build-issue-description
-        uses: skills/action-text-variables@v3
+        uses: skills/action-text-variables@v4
         with:
           template-file: exercise-toolkit/markdown-templates/step-feedback/welcome.md
           template-vars: |
@@ -149,7 +149,7 @@ jobs:
       
       - name: Build welcome message from template
         id: build-new-readme
-        uses: skills/action-text-variables@v3
+        uses: skills/action-text-variables@v4
         with:
           template-file: exercise-toolkit/markdown-templates/readme/exercise-started.md
           template-vars: |

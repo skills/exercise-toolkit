@@ -73,7 +73,7 @@ jobs:
 
       - name: Get template repository
         id: get-template-repo
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const { data: repo } = await github.rest.repos.get({
@@ -92,7 +92,7 @@ jobs:
             }
 
       - name: Find and replace image URLs in step files
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           STEP_FILES_GLOB: .github/steps/*.md
         with:
@@ -129,7 +129,7 @@ jobs:
 
       - name: Create issue - add welcome message
         id: create-issue
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const { data: issue } = await github.rest.issues.create({

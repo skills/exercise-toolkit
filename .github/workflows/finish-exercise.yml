@@ -82,7 +82,7 @@ jobs:
         id: build-finish-message
         uses: skills/action-text-variables@v4
         with:
-          template-file: exercise-toolkit/markdown-templates/step-feedback/exercise-finished.md
+          template-file: exercise-toolkit/markdown-templates/step-feedback/${{ inputs.update-readme-with-congratulations && 'exercise-finished.md' || 'exercise-finished-no-readme-update.md' }}
           template-vars: |
             login: ${{ github.actor }}
             repo_full_name: ${{ github.repository }}

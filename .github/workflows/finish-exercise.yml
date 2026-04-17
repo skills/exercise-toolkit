@@ -22,7 +22,7 @@ permissions:
   issues: write
 
 env:
-  EXERCISE_TOOLKIT_REF: 591d7ca109412b3ff9c70b15a31377031e11e4c4
+  EXERCISE_TOOLKIT_REF: a0bb3710219767ea8fb1de21c9323aba05ce984a
 
 jobs:
   update_readme:
@@ -86,6 +86,7 @@ jobs:
           template-vars: |
             login: ${{ github.actor }}
             repo_full_name: ${{ github.repository }}
+            readme_updated: ${{ inputs.update-readme-with-congratulations }}
       - name: Create comment - exercise finished
         run: |
           gh issue comment "${{ inputs.issue-url }}" \

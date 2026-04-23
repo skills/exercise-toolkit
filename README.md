@@ -14,6 +14,7 @@
     - [📋 Markdown Templates](#-markdown-templates)
       - [Using with GrantBirki/comment for issue comments](#using-with-grantbirkicomment-for-issue-comments)
       - [Using with action-text-variables for file updates](#using-with-action-text-variables-for-file-updates)
+  - [Self-Hosted Runners](#self-hosted-runners)
   - [Notable Resources](#notable-resources)
 
 ## Purpose
@@ -122,6 +123,25 @@ steps:
     env:
       README_CONTENT: ${{ steps.build-readme.outputs.updated-text }}
 ```
+
+## Self-Hosted Runners
+
+By default, all exercise workflows run on `ubuntu-latest`. Organizations that need exercises to run on self-hosted runners can set an **organization variable** (or repository variable) named:
+
+```
+GITHUB_SKILLS_SHR_LABEL
+```
+
+Set this variable to the label of your self-hosted runner (e.g., `self-hosted`, `my-org-runner`). When present, all reusable workflows in this toolkit (`start-exercise`, `find-exercise-issue`, `finish-exercise`) will use that label for `runs-on`. If the variable is not set, workflows default to `ubuntu-latest`.
+
+**Setup:**
+
+1. Go to your **Organization Settings** → **Actions** → **Variables** (or **Repository Settings** → **Actions** → **Variables** for a single repo).
+2. Create a new variable named `GITHUB_SKILLS_SHR_LABEL`.
+3. Set the value to your runner label (e.g., `self-hosted`).
+
+> [!NOTE]
+> Exercise-specific workflows (the numbered step workflows inside each exercise repo) are **not** managed by this toolkit. Those workflows must be updated separately to use the same variable pattern if self-hosted runner support is needed end-to-end.
 
 ## Notable Resources
 

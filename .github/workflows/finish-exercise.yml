@@ -27,7 +27,7 @@ env:
 jobs:
   update_readme:
     name: Update README with congratulations
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.GITHUB_SKILLS_SHR_LABEL || 'ubuntu-latest' }}
     if: inputs.update-readme-with-congratulations
 
     steps:
@@ -68,7 +68,7 @@ jobs:
 
   finish_issue:
     name: Comment and close issue
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.GITHUB_SKILLS_SHR_LABEL || 'ubuntu-latest' }}
 
     steps:
       - name: Get response templates

@@ -35,7 +35,7 @@ env:
 jobs:
   disable_workflows:
     name: Disable exercise workflows
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.GITHUB_SKILLS_SHR_LABEL || 'ubuntu-latest' }}
 
     steps:
       - uses: actions/checkout@v6
@@ -54,7 +54,7 @@ jobs:
 
   create_exercise:
     name: Create exercise issue and update README
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.GITHUB_SKILLS_SHR_LABEL || 'ubuntu-latest' }}
 
     outputs:
       issue-url: ${{ steps.create-issue.outputs.ISSUE_URL }}

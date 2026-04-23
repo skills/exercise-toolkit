@@ -129,7 +129,7 @@ steps:
 By default, all exercise workflows run on `ubuntu-latest`. Organizations that need exercises to run on self-hosted runners can set an **organization variable** (or repository variable) named:
 
 ```
-GITHUB_SKILLS_SHR_LABEL
+GH_SKILLS_SHR_LABEL
 ```
 
 Set this variable to the label of your self-hosted runner (e.g., `self-hosted`, `my-org-runner`). When present, all reusable workflows in this toolkit (`start-exercise`, `find-exercise-issue`, `finish-exercise`) will use that label for `runs-on`. If the variable is not set, workflows default to `ubuntu-latest`.
@@ -137,7 +137,7 @@ Set this variable to the label of your self-hosted runner (e.g., `self-hosted`, 
 **Setup:**
 
 1. Go to your **Organization Settings** → **Actions** → **Variables** (or **Repository Settings** → **Actions** → **Variables** for a single repo).
-2. Create a new variable named `GITHUB_SKILLS_SHR_LABEL`.
+2. Create a new variable named `GH_SKILLS_SHR_LABEL`.
 3. Set the value to your runner label (e.g., `self-hosted`).
 
 > [!NOTE]

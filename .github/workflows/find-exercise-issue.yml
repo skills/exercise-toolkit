@@ -22,7 +22,7 @@ permissions:
 jobs:
   find_exercise:
     name: Find exercise by issue title
-    runs-on: ${{ vars.GITHUB_SKILLS_SHR_LABEL || 'ubuntu-latest' }}
+    runs-on: ${{ vars.GH_SKILLS_SHR_LABEL || 'ubuntu-latest' }}
 
     outputs:
       issue-url: ${{ steps.find-exercise-issue.outputs.ISSUE_URL }}

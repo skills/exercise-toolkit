@@ -16,7 +16,7 @@ jobs:
     name: Test Nonexistent Workflow Fails
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Test with non-existent workflow
         id: nonexistent
@@ -41,7 +41,7 @@ jobs:
     name: Test Current Workflow Status Handling
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Test current workflow reaches in_progress
         uses: ./actions/wait-for-workflow

@@ -1,4 +1,10 @@
-name: Start Exercise
+jobs:
+  start_exercise:
+    name: Start Exercise
+    uses: skills/exercise-toolkit/.github/workflows/start-exercise.yml@<git-tag>
+    with:
+      exercise-title: "Introduction to GitHub Copilot"
+      intro-message: "Let's get you started with GitHub Copilot :robot: ! We will learn ..."name: Start Exercise
 
 on:
   workflow_call:

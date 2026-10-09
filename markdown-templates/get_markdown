@@ -1,0 +1,11 @@
+steps:
+  - name: Get markdown templates
+    uses: actions/checkout@v6
+    with:
+      repository: skills/exercise-toolkit
+      path: exercise-toolkit
+      ref: <git-tag>
+
+  - name: Use the template
+    run: |
+      cat exercise-toolkit/markdown-templates/step-feedback/checking-work.md
